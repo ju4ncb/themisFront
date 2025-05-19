@@ -60,3 +60,39 @@ h3 {
     }
   }
 }
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  height: 100%;
+  .container-cards {
+    display: flex;
+    flex-direction: row;
+    padding: 0 50px;
+    align-items: center;
+    justify-content: space-around;
+    overflow: hidden;
+    width: 100%;
+    height: 155px;
+    .container-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+
+      img {
+        height: 50%;
+        width: auto;
+      }
+      .texto-card {
+        width: auto;
+        height: 50%;
+      }
+    }
+  }
+}

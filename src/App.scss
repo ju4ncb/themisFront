@@ -1,0 +1,62 @@
+$color-bg: #ccc;
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Martian mono", cursive;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Margarine", cursive;
+}
+
+/* Layout para las páginas de inicio */
+
+.home-layout {
+  width: 100vw;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 325px calc(100% - 325px);
+  place-items: center;
+  .sidebar {
+    display: flex;
+    background: $color-bg;
+    flex-direction: column;
+    justify-content: center;
+    width: 325px;
+    height: 100%;
+    padding: 0 70px;
+    gap: 2rem;
+    a {
+      font-size: 24px;
+    }
+  }
+  .content-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    min-height: 100vh;
+    .login-navbar {
+      background: $color-bg;
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: flex;
+      height: 44px;
+      width: 258px;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      a {
+        font-size: 12px;
+      }
+    }
+  }
+}

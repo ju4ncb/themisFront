@@ -4,20 +4,20 @@ interface Props {
   Icon?: React.ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
   >;
+  title?: string;
   children: React.ReactNode;
-  number: number;
 }
 
-const Card = ({ Icon, number, children }: Props) => {
+const Feature = ({ Icon, title, children }: Props) => {
   return (
-    <div className="container-card">
+    <div className="container-feature">
       {Icon ? <Icon /> : <SquareDashed />}
-      <h1 className="numero-card">{number}</h1>
-      <div className="texto-card">
+      <div className="texto-feature">
+        <h2>{title}</h2>
         <p>{children}</p>
       </div>
     </div>
   );
 };
 
-export default Card;
+export default Feature;

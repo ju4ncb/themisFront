@@ -1,6 +1,7 @@
 import { BrainCircuit, UserPlus2, Users2 } from "lucide-react";
 import Card from "../../components/Card";
 import defaultImg from "../../assets/default-icon.svg";
+import "./index.scss";
 
 const Home = () => {
   return (

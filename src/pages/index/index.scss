@@ -1,0 +1,77 @@
+@import "../../colors.scss";
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  height: 100%;
+  .home-titulo {
+    margin-top: 80px;
+    font-size: 108px;
+  }
+  .container-cards {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 100px;
+    align-items: center;
+    justify-content: space-evenly;
+    overflow: hidden;
+    background: $color-bg-3;
+    margin-bottom: 75px;
+    width: 100%;
+    height: 215px;
+    .container-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 25%;
+      height: 100%;
+      svg {
+        height: 25%;
+        width: auto;
+      }
+      .numero-card {
+        height: 50%;
+        line-height: 97.5px;
+        font-size: 72px;
+      }
+      .texto-card {
+        display: grid;
+        place-items: center;
+        width: auto;
+        height: 25%;
+        p {
+          text-align: center;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  .analizador-container {
+    display: grid;
+    width: 100%;
+    padding: 0 175px;
+    height: 240px;
+    background: $color-bg-3;
+    place-items: center;
+    margin: 75px 0;
+    grid-template-columns: 50% 50%;
+    .analizador-texto-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 10px;
+    }
+    .analizador-carousel-container {
+      height: 100%;
+      img {
+        height: 240px;
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import {
   UploadCloud,
 } from "lucide-react";
 import Feature from "../../components/Feature";
+import "./about.scss";
 
 const About = () => {
   return (

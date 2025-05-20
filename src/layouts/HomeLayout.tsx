@@ -1,7 +1,9 @@
 import { Outlet, Link } from "react-router-dom";
 import defaultImg from "../assets/default-icon.svg";
+import { useUsuario } from "../contexts/UsuarioContext";
 
 const HomeLayout = () => {
+  const { usuario, estaAutenticado, setUsuario } = useUsuario();
   return (
     <>
       <nav className="sidebar">
@@ -15,8 +17,20 @@ const HomeLayout = () => {
       <div className="home-layout">
         <main className="content-container">
           <nav className="login-navbar">
-            <Link to="/register">Registro</Link>
-            <Link to="/about">Inicio de sesión</Link>
+            {estaAutenticado ? (
+              <>
+                <p>Bienvenido, {usuario?.nombres}</p>
+                <Link to="/dashboard">Dashboard</Link>
+                <Link to="#" onClick={() => setUsuario(null)}>
+                  Cerrar sesión
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/register">Registro</Link>
+                <Link to="/login">Inicio de sesión</Link>
+              </>
+            )}
           </nav>
           <Outlet />
         </main>

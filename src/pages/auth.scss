@@ -1,0 +1,26 @@
+@import "../colors.scss";
+
+.form-input-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  label {
+    color: $color-contrast-2;
+  }
+  input,
+  textarea {
+    background: $color-contrast-3;
+    color: $color-contrast-2;
+    border: $color-contrast-2 1px solid;
+  }
+  span {
+    color: crimson;
+  }
+  p {
+    text-align: right;
+    font-size: 12px;
+    a {
+      color: $color-bg-2;
+    }
+  }
+}

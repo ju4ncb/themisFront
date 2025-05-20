@@ -1,0 +1,29 @@
+@import "../colors.scss";
+
+.auth-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100%;
+  padding: 65px 0;
+  gap: 5px;
+  align-items: center;
+  .auth-title {
+    color: $color-contrast-4;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 32px;
+  }
+  button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: $color-contrast-4;
+  }
+}
+
+.justify-content {
+  justify-content: center;
+}

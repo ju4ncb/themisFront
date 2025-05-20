@@ -1,6 +1,7 @@
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import { useForm } from "react-hook-form";
 import ContactInfo from "../../components/ContactInfo";
+import "./contact.scss";
 
 const Contact = () => {
   const onSubmit = (data: any) => {

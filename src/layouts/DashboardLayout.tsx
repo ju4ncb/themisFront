@@ -1,56 +1,54 @@
 import { Outlet, Link } from "react-router-dom";
+import defaultImg from "../assets/default-icon.svg";
+import { ChartBarStacked, History, Home, Lightbulb, Settings2, UploadCloud, UserCog2 } from "lucide-react";
 
 const DashboardLayout = () => {
   const configparamsDisabled = true;
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
-      {/* Sidebar */}
-      <aside style={{ width: "220px", background: "#f4f4f4", padding: "1rem" }}>
-        <h2>Dashboard</h2>
-        <nav>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            <li>
+    <div className="dashboard-layout">
+      <div className="sidebar-dashboard">
+        <img src={defaultImg} alt="Logo" />
+        <nav className="links">
+          <ul className="links-list">
+            <li className="links-list-item">
+              <Home/>
               <Link to="/dashboard">Inicio dashboard</Link>
             </li>
-            <li>
+            <li className="links-list-item">
+              <UploadCloud/>
               <Link to="/dashboard/upload">Subir archivo</Link>
             </li>
-            <li>
+            <li className="links-list-item">
+              <ChartBarStacked/>
               <Link to="/dashboard/graphs">Ver gráficas</Link>
             </li>
-            <li>
+            <li className="links-list-item">
+              <Lightbulb/>
               <Link to="/dashboard/recommendations">Recomendaciones</Link>
             </li>
-            <li>
+            <li className="links-list-item">
+              <History/>
               <Link to="/dashboard/history">Historial</Link>
             </li>
-            <li>
+            <li className="links-list-item">
+              <Settings2/>
               {configparamsDisabled ? (
-                <span
-                  style={{
-                    color: "#999",
-                    cursor: "not-allowed",
-                    textDecoration: "none",
-                    display: "inline-block",
-                    padding: "0.25rem 0",
-                  }}
-                >
+                <Link to="#" className="disabled-link">
                   Configurar hiperparámetros (deshabilitado)
-                </span>
+                </Link>
               ) : (
                 <Link to="/dashboard/configparams">
                   Configurar hiperparámetros
                 </Link>
               )}
             </li>
-            <li>
+            <li className="links-list-item">
+              <UserCog2/>
               <Link to="/dashboard/admin">Administrar</Link>
             </li>
           </ul>
         </nav>
-      </aside>
-
-      {/* Main content */}
+      </div>
       <main style={{ flexGrow: 1, padding: "1rem" }}>
         <Outlet />
       </main>

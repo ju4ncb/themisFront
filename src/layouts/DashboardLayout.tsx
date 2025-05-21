@@ -5,22 +5,63 @@ import {
   History,
   Home,
   Lightbulb,
+  LogOut,
   Settings2,
   UploadCloud,
   UserCircle2,
+  UserCog,
   UserCog2,
 } from "lucide-react";
 import { useUsuario } from "../contexts/UsuarioContext";
+import { useState } from "react";
 
 const DashboardLayout = () => {
   const configparamsDisabled = true;
-  const { usuario } = useUsuario();
+  const [dropdownActive, setDropdownActive] = useState(false);
+  const { usuario, setUsuario } = useUsuario();
   return (
     <div className="dashboard-layout">
       <div className="sidebar-dashboard">
         <div className="user-card">
-          <UserCircle2 />
-          <p>{usuario?.nombreusuario}</p>
+          <section className="user-info">
+            <UserCircle2 />
+            <p>{usuario?.nombreusuario}</p>
+          </section>
+          <section className="user-menu-dropdown">
+            <button
+              className="user-menu-trigger"
+              onClick={() => setDropdownActive((prev) => !prev)}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16">
+                <path
+                  d="M4 6l4 4 4-4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                />
+              </svg>
+            </button>
+            {dropdownActive && (
+              <ul className="user-menu-list">
+                <li>
+                  <UserCog />
+                  <Link to="/dashboard/settings">Configuración</Link>
+                </li>
+                <li>
+                  <LogOut />
+                  <Link
+                    to="#"
+                    onClick={() => {
+                      setUsuario(null);
+                      window.location.assign("/");
+                    }}
+                  >
+                    Cerrar sesión
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </section>
         </div>
         <a href="/">
           <img src={defaultImg} alt="Logo" />

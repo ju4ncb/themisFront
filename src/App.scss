@@ -242,4 +242,116 @@ button {
   textarea:focus {
     outline: none;
   }
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+
+    &__logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    &__links {
+      display: flex;
+      gap: 1.5rem;
+      a {
+        color: #4a5568;
+        font-weight: 500;
+        text-decoration: none;
+        &:hover {
+          color: #3182ce;
+        }
+      }
+    }
+
+    &__icon {
+      color: #a0aec0;
+      cursor: pointer;
+      &:hover {
+        color: #4a5568;
+      }
+    }
+  }
+  /* ==== Card genéricas ==== */
+  .container-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+    position: relative;
+  }
+
+  .container-card svg {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: #a0aec0;
+  }
+
+  .numero-card {
+    /* ocultamos el número si no lo vamos a usar visualmente */
+    display: none;
+  }
+
+  .texto-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .card__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .card__name {
+    font-weight: 500;
+    font-size: 1.05rem;
+  }
+
+  .card__date,
+  .card__link {
+    font-size: 0.875rem;
+    color: #4a5568;
+  }
+
+  .card__link {
+    text-decoration: underline;
+  }
+
+  .btn--secondary {
+    align-self: flex-start;
+    padding: 0.4rem 0.75rem;
+    background: transparent;
+    color: #3182ce;
+    border: 1px solid #3182ce;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+
+    &:hover {
+      background: #3182ce;
+      color: #fff;
+    }
+  }
+
+  /* ==== Grid de cards ==== */
+  .dashboard__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 2rem;
+  }
 }

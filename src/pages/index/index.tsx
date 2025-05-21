@@ -2,19 +2,56 @@ import { BrainCircuit, UserPlus2, Users2 } from "lucide-react";
 import Card from "../../components/Card";
 import defaultImg from "../../assets/default-icon.svg";
 import "./index.scss";
+import { useEffect, useState } from "react";
+const API_URL = import.meta.env.VITE_API_URL;
+
+interface CardsInfo {
+  modelosTotales: number;
+  usuariosTotales: number;
+  usuariosNuevosSemana: number;
+}
 
 const Home = () => {
+  const cardsInfoDummy = {
+    modelosTotales: 0,
+    usuariosTotales: 0,
+    usuariosNuevosSemana: 0,
+  };
+  const [cardsInfo, setCardsInfo] = useState(cardsInfoDummy as CardsInfo);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [modelosRes, usuariosRes, nuevosRes] = await Promise.all([
+          fetch(`${API_URL}/resultadosml/count`),
+          fetch(`${API_URL}/usuarios/count`),
+          fetch(`${API_URL}/usuarios/count-last-week`),
+        ]);
+        const modelosTotales = await modelosRes.json();
+        const usuariosTotales = await usuariosRes.json();
+        const usuariosNuevosSemana = await nuevosRes.json();
+        setCardsInfo({
+          modelosTotales: modelosTotales.count,
+          usuariosTotales: usuariosTotales.count,
+          usuariosNuevosSemana: usuariosNuevosSemana.count,
+        });
+      } catch (error) {
+        console.error("Error fetching card info:", error);
+      }
+    };
+    fetchData();
+    setCardsInfo({} as CardsInfo);
+  }, []);
   return (
     <div className="home-container">
       <h1 className="home-titulo">Themis</h1>
       <div className="container-cards">
-        <Card Icon={BrainCircuit} number={69}>
+        <Card Icon={BrainCircuit} number={cardsInfo.modelosTotales}>
           Modelos de IA desarrollados en total
         </Card>
-        <Card Icon={Users2} number={69420}>
+        <Card Icon={Users2} number={cardsInfo.usuariosTotales}>
           Usuarios totales
         </Card>
-        <Card Icon={UserPlus2} number={420}>
+        <Card Icon={UserPlus2} number={cardsInfo.usuariosNuevosSemana}>
           Usuarios nuevos esta semana
         </Card>
       </div>

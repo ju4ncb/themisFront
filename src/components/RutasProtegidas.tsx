@@ -10,7 +10,7 @@ export const RequiereAcceso = ({ children }: { children: React.ReactNode }) => {
       </div>
     );
   }
-  return <>{children}</>;
+  return children;
 };
 
 export const RequiereNoAcceso = ({
@@ -31,5 +31,5 @@ export const RequiereNoAcceso = ({
       </div>
     );
   }
-  return <>{children}</>;
+  return children;
 };

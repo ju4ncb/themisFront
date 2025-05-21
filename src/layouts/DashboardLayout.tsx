@@ -1,11 +1,12 @@
-import { Outlet, Link } from "react-router-dom";
-import defaultImg from "../assets/default-icon.svg";
+import { Outlet, Link, NavLink } from "react-router-dom";
+import logo from "../assets/themis-logo-2-white.png";
 import {
   ChartBarStacked,
   History,
   Home,
   Lightbulb,
   LogOut,
+  Menu,
   Settings2,
   UploadCloud,
   UserCircle2,
@@ -22,6 +23,9 @@ const DashboardLayout = () => {
   return (
     <div className="dashboard-layout">
       <div className="sidebar-dashboard">
+        <a href="/">
+          <img src={logo} alt="Logo" />
+        </a>
         <div className="user-card">
           <section className="user-info">
             <UserCircle2 />
@@ -29,23 +33,16 @@ const DashboardLayout = () => {
           </section>
           <section className="user-menu-dropdown">
             <button
-              className="user-menu-trigger"
+              className={dropdownActive ? "active" : "user-menu-trigger"}
               onClick={() => setDropdownActive((prev) => !prev)}
             >
-              <svg width="16" height="16" viewBox="0 0 16 16">
-                <path
-                  d="M4 6l4 4 4-4"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  fill="none"
-                />
-              </svg>
+              <Menu />
             </button>
             {dropdownActive && (
               <ul className="user-menu-list">
                 <li>
                   <UserCog />
-                  <Link to="/dashboard/settings">Configuración</Link>
+                  <Link to="/dashboard/configuser">Configuración</Link>
                 </li>
                 <li>
                   <LogOut />
@@ -63,46 +60,82 @@ const DashboardLayout = () => {
             )}
           </section>
         </div>
-        <a href="/">
-          <img src={defaultImg} alt="Logo" />
-        </a>
         <nav className="links">
           <ul className="links-list">
             <li className="links-list-item">
-              <Home />
-              <Link to="/dashboard">Inicio dashboard</Link>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active-link" : "")}
+                to="/dashboard/home"
+              >
+                <Home />
+                <p>Inicio dashboard</p>
+              </NavLink>
             </li>
             <li className="links-list-item">
-              <UploadCloud />
-              <Link to="/dashboard/upload">Subir archivo</Link>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active-link" : "")}
+                to="/dashboard/upload"
+              >
+                <UploadCloud />
+                <p>Subir archivo</p>
+              </NavLink>
             </li>
             <li className="links-list-item">
-              <ChartBarStacked />
-              <Link to="/dashboard/graphs">Ver gráficas</Link>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active-link" : "")}
+                to="/dashboard/graphs"
+              >
+                <ChartBarStacked />
+                <p>Ver gráficas</p>
+              </NavLink>
             </li>
             <li className="links-list-item">
-              <Lightbulb />
-              <Link to="/dashboard/recommendations">Recomendaciones</Link>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active-link" : "")}
+                to="/dashboard/recommendations"
+              >
+                <Lightbulb />
+                <p>Recomendaciones</p>
+              </NavLink>
             </li>
             <li className="links-list-item">
-              <History />
-              <Link to="/dashboard/history">Historial</Link>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active-link" : "")}
+                to="/dashboard/history"
+              >
+                <History />
+                <p>Historial</p>
+              </NavLink>
             </li>
             <li className="links-list-item">
-              <Settings2 />
               {configparamsDisabled ? (
-                <Link to="#" className="disabled-link">
-                  Configurar hiperparámetros (deshabilitado)
-                </Link>
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    isActive ? "active-link disabled-link" : "disabled-link"
+                  }
+                >
+                  <Settings2 />
+                  <p>Configurar hiperparámetros (deshabilitado)</p>
+                </NavLink>
               ) : (
-                <Link to="/dashboard/configparams">
-                  Configurar hiperparámetros
-                </Link>
+                <NavLink
+                  className={({ isActive }) => (isActive ? "active-link" : "")}
+                  to="/dashboard/configparams"
+                >
+                  <Settings2 />
+                  <p>Configurar hiperparámetros</p>
+                </NavLink>
               )}
             </li>
             <li className="links-list-item">
-              <UserCog2 />
-              <Link to="/dashboard/admin">Administrar</Link>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active-link" : "")}
+                to="/dashboard/admin"
+              >
+                <UserCog2 />
+                <p>Administrar</p>
+              </NavLink>
             </li>
           </ul>
         </nav>

@@ -1,5 +1,5 @@
-import { Outlet, Link } from "react-router-dom";
-import defaultImg from "../assets/default-icon.svg";
+import { Outlet, Link, NavLink } from "react-router-dom";
+import logo from "../assets/themis-logo-2-white.png";
 import { useUsuario } from "../contexts/UsuarioContext";
 
 const HomeLayout = () => {
@@ -7,16 +7,35 @@ const HomeLayout = () => {
   return (
     <>
       <nav className="sidebar">
-        <img src={defaultImg} alt="icon" />
+        <img src={logo} alt="icon" />
         <ul className="links">
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-          <Link to="/contact">Contact</Link>
+          <NavLink
+            to="/"
+            className={({ isActive }) => (isActive ? "active-link" : "")}
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to="/about"
+            className={({ isActive }) => (isActive ? "active-link" : "")}
+          >
+            About
+          </NavLink>
+          <NavLink
+            to="/contact"
+            className={({ isActive }) => (isActive ? "active-link" : "")}
+          >
+            Contact
+          </NavLink>
         </ul>
       </nav>
       <div className="home-layout">
         <main className="content-container">
-          <nav className="login-navbar">
+          <nav
+            className={
+              estaAutenticado ? "login-navbar size-increase" : "login-navbar"
+            }
+          >
             {estaAutenticado ? (
               <>
                 <p>Bienvenido, {usuario?.nombres}</p>

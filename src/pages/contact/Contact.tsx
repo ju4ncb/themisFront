@@ -1,6 +1,7 @@
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import { useForm } from "react-hook-form";
 import ContactInfo from "../../components/ContactInfo";
+import logo from "../../assets/themis-logo-white.png";
 import "./contact.scss";
 
 const Contact = () => {
@@ -46,47 +47,50 @@ const Contact = () => {
           </div>
           <button type="submit">Enviar</button>
         </form>
-        <div className="info-contact">
-          <div className="info">
-            <ContactInfo title="Direccion">
-              <p>Calle xxxxxx</p>
-              <p>Barranquilla,</p>
-              <p>Colombia</p>
-            </ContactInfo>
-            <ContactInfo title="Email">
-              <p>xxxx@xxxx.xxx</p>
-            </ContactInfo>
-            <ContactInfo title="Teléfono">
-              <p>(xxx)xxx-xxxx</p>
-            </ContactInfo>
-          </div>
-          <div className="links">
-            <div className="social-media">
-              <h3>Redes sociales</h3>
-              <div className="social-icons">
-                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                  <Facebook />
-                </a>
-                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                  <Instagram />
-                </a>
-                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                  <Twitter />
-                </a>
-              </div>
+        <div className="info-container">
+          <img src={logo} alt="themis-logo" />
+          <div className="info-contact">
+            <div className="info">
+              <ContactInfo title="Direccion">
+                <p>Calle xxxxxx</p>
+                <p>Barranquilla,</p>
+                <p>Colombia</p>
+              </ContactInfo>
+              <ContactInfo title="Email">
+                <p>xxxx@xxxx.xxx</p>
+              </ContactInfo>
+              <ContactInfo title="Teléfono">
+                <p>(xxx)xxx-xxxx</p>
+              </ContactInfo>
             </div>
-            <div className="team">
-              <h3>Equipo de desarrollo de themis</h3>
-              <ul>
-                <li>David Arroyo</li>
-                <li>Juan Caballero</li>
-                <li>Julio Escobar</li>
-                <li>Juan Montenegro</li>
-                <li>Juan Pérez</li>
-                <li>Andrés Solano</li>
-                <li>Francisco Sosa</li>
-                <li>Kevin Yepez</li>
-              </ul>
+            <div className="links">
+              <div className="social-media">
+                <h3>Redes sociales</h3>
+                <div className="social-icons">
+                  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                    <Facebook />
+                  </a>
+                  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                    <Instagram />
+                  </a>
+                  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                    <Twitter />
+                  </a>
+                </div>
+              </div>
+              <div className="team">
+                <h3>Equipo de desarrollo de themis</h3>
+                <ul>
+                  <li>David Arroyo</li>
+                  <li>Juan Caballero</li>
+                  <li>Julio Escobar</li>
+                  <li>Juan Montenegro</li>
+                  <li>Juan Pérez</li>
+                  <li>Andrés Solano</li>
+                  <li>Francisco Sosa</li>
+                  <li>Kevin Yepez</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

@@ -6,12 +6,13 @@ import {
   UploadCloud,
 } from "lucide-react";
 import Feature from "../../components/Feature";
+import logo from "../../assets/themis-logo-white.png";
 import "./about.scss";
 
 const About = () => {
   return (
     <div className="about-container">
-      <h1>Themis</h1>
+      <img src={logo} alt="themis-logo" />
       <div className="container-features">
         <Feature Icon={UploadCloud} title="Carga">
           Puedes subir tus propios archivos (por ejemplo, en formato CSV) con

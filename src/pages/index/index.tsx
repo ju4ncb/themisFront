@@ -1,6 +1,7 @@
 import { BrainCircuit, UserPlus2, Users2 } from "lucide-react";
 import Card from "../../components/Card";
 import defaultImg from "../../assets/default-icon.svg";
+import logo from "../../assets/themis-logo-white.png";
 import "./index.scss";
 import { useEffect, useState } from "react";
 const API_URL = import.meta.env.VITE_API_URL;
@@ -43,7 +44,7 @@ const Home = () => {
   }, []);
   return (
     <div className="home-container">
-      <h1 className="home-titulo">Themis</h1>
+      <img src={logo} alt="themis-logo" />
       <div className="container-cards">
         <Card Icon={BrainCircuit} number={cardsInfo.modelosTotales}>
           Modelos de IA desarrollados en total

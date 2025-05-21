@@ -34,56 +34,65 @@
       }
     }
   }
-
-  .info-contact {
-    margin-top: 2rem;
-    width: 50%;
-    height: 450px;
+  .info-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    h3 {
-      font-size: 24px;
+    width: 50%;
+    img {
+      height: 150px;
+      width: fit-content;
     }
-    .info {
+    .info-contact {
+      margin-top: 2rem;
+      width: 100%;
+      height: 450px;
       display: flex;
-      width: 50%;
-      align-items: end;
-      text-align: end;
-      flex-direction: column;
-      gap: 75px;
-      height: 100%;
-      margin-right: 50px;
-      .contact {
-        p {
-          font-size: 14px;
-        }
+      align-items: center;
+      h3 {
+        font-size: 24px;
       }
-    }
-    .links {
-      display: flex;
-      width: 50%;
-      flex-direction: column;
-      height: 100%;
-      .social-media {
-        flex: 1;
+      .info {
         display: flex;
+        width: 50%;
+        align-items: end;
+        text-align: end;
         flex-direction: column;
-        gap: 1rem;
-        .social-icons {
-          display: flex;
-          gap: 2.5rem;
-          width: 100%;
+        gap: 75px;
+        height: 100%;
+        margin-right: 50px;
+        .contact {
+          p {
+            font-size: 14px;
+          }
         }
       }
-      .team {
-        flex: 2;
-        h3 {
-          font-size: 18px;
+      .links {
+        display: flex;
+        width: 50%;
+        flex-direction: column;
+        height: 100%;
+        .social-media {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          .social-icons {
+            display: flex;
+            gap: 2.5rem;
+            width: 100%;
+          }
         }
-        li {
-          margin-top: 10px;
-          margin-left: -15px;
-          font-size: 12px;
+        .team {
+          flex: 2;
+          h3 {
+            font-size: 18px;
+          }
+          li {
+            margin-top: 10px;
+            margin-left: -15px;
+            font-size: 12px;
+          }
         }
       }
     }

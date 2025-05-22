@@ -294,6 +294,32 @@ select:focus {
     width: calc(100vw - $sidebar-width);
     min-height: 100vh;
     margin-left: $sidebar-width;
+    .dashboard-navbar {
+      display: flex;
+      margin-left: 30px;
+      gap: 0.5rem;
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      place-self: start;
+      div {
+        display: flex;
+        gap: 0.5rem;
+      }
+    }
+  }
+  .with-nav {
+    grid-template-rows: 75px auto;
+  }
+  @media (max-width: 700px) {
+    .main-content {
+      .dashboard-navbar {
+        display: none;
+      }
+    }
+    .with-nav {
+      grid-template-columns: auto;
+    }
   }
 }
 
@@ -392,5 +418,36 @@ select:focus {
   input:focus,
   textarea:focus {
     outline: none;
+  }
+}
+
+.no-bg {
+  background: none !important;
+}
+
+.container-cardbutton {
+  background: $color-bg-3;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  .texto-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    .card__name {
+      font-weight: 500;
+      font-size: 1.05rem;
+    }
+
+    .card__attr {
+      font-size: 0.875rem;
+      color: $color-contrast-3;
+    }
+  }
+  .boton-card {
+    margin-top: 20px;
+    width: 160px;
   }
 }

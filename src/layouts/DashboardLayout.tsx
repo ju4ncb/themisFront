@@ -1,4 +1,4 @@
-import { Outlet, Link, NavLink } from "react-router-dom";
+import { Outlet, Link, NavLink, useLocation } from "react-router-dom";
 import logo from "../assets/themis-logo-2-white.png";
 import {
   ChartBarStacked,
@@ -15,11 +15,13 @@ import {
 } from "lucide-react";
 import { useUsuario } from "../contexts/UsuarioContext";
 import { useState } from "react";
+import NavbarDashboard from "../components/NavbarDashboard";
 
 const DashboardLayout = () => {
-  const configparamsDisabled = true;
   const [dropdownActive, setDropdownActive] = useState(false);
   const { usuario, setUsuario } = useUsuario();
+  const location = useLocation();
+  const currentUrl = location.pathname;
   return (
     <div className="dashboard-layout">
       <div className="sidebar-dashboard">
@@ -99,34 +101,16 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
             <li className="links-list-item">
-              <NavLink
-                className={({ isActive }) => (isActive ? "active-link" : "")}
-                to="/dashboard/history"
-              >
+              <NavLink to="#" className="disabled-link">
                 <History />
-                <p>Historial</p>
+                <p>Historial (en desarrollo)</p>
               </NavLink>
             </li>
             <li className="links-list-item">
-              {configparamsDisabled ? (
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    isActive ? "active-link disabled-link" : "disabled-link"
-                  }
-                >
-                  <Settings2 />
-                  <p>Configurar hiperparámetros (deshabilitado)</p>
-                </NavLink>
-              ) : (
-                <NavLink
-                  className={({ isActive }) => (isActive ? "active-link" : "")}
-                  to="/dashboard/configparams"
-                >
-                  <Settings2 />
-                  <p>Configurar hiperparámetros</p>
-                </NavLink>
-              )}
+              <NavLink to="#" className="disabled-link">
+                <Settings2 />
+                <p>Configurar hiperparámetros (en desarrollo)</p>
+              </NavLink>
             </li>
             <li className="links-list-item">
               <NavLink
@@ -140,7 +124,16 @@ const DashboardLayout = () => {
           </ul>
         </nav>
       </div>
-      <main className="main-content">
+      <main
+        className={
+          currentUrl !== "/dashboard/home"
+            ? "main-content with-nav"
+            : "main-content"
+        }
+      >
+        {currentUrl !== "/dashboard/home" && (
+          <NavbarDashboard currentUrl={currentUrl} />
+        )}
         <Outlet />
       </main>
     </div>

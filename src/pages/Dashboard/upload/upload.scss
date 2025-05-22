@@ -1,0 +1,59 @@
+@import "../../../colors.scss";
+
+.upload-container {
+  display: grid;
+  grid-template-rows: 100px auto 100px;
+  min-height: 100%;
+  width: 100%;
+  .upload-text-card {
+    width: 100%;
+    height: 100%;
+    padding-right: calc(100% - 400px);
+  }
+  .upload-dropzone {
+    cursor: pointer;
+    display: flex;
+    margin: 0 20px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 4px dashed $color-bg-2;
+    border-radius: 8px;
+    padding: 32px;
+    text-align: center;
+    margin-top: 24px;
+    background: $color-bg-5;
+    transition: filter 0.3s ease;
+    &:hover {
+      filter: brightness(125%);
+    }
+    input {
+      display: none;
+    }
+    svg {
+      width: 175px;
+      height: 175px;
+      color: $color-bg-2;
+    }
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      label {
+        cursor: pointer;
+        color: $color-bg-2;
+        font-weight: 500;
+        display: "block";
+      }
+    }
+  }
+  .upload-options {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    button {
+      font-size: 20px;
+    }
+  }
+}

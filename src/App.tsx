@@ -13,13 +13,13 @@ import Upload from "./pages/Dashboard/upload/Upload";
 import Graphs from "./pages/Dashboard/graphs/Graphs";
 import ConfigParams from "./pages/Dashboard/configparams/ConfigParams";
 import Recommendations from "./pages/Dashboard/recommendations/Recommendations";
-import History from "./pages/Dashboard/history/History";
 import Admin from "./pages/Dashboard/admin/Admin";
 import HomeLayout from "./layouts/HomeLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
 import { UsuarioProvider } from "./contexts/UsuarioContext";
 import AuthLayout from "./layouts/AuthLayout";
 import { RequiereAcceso, RequiereNoAcceso } from "./components/RutasProtegidas";
+import { ArchivoSalarialProvider } from "./contexts/ArchivoSalarialContext";
 
 const App: React.FC = () => (
   <UsuarioProvider>
@@ -46,7 +46,9 @@ const App: React.FC = () => (
         path="dashboard"
         element={
           <RequiereAcceso>
-            <DashboardLayout />
+            <ArchivoSalarialProvider>
+              <DashboardLayout />
+            </ArchivoSalarialProvider>
           </RequiereAcceso>
         }
       >
@@ -57,7 +59,6 @@ const App: React.FC = () => (
         <Route path="graphs" element={<Graphs />} />
         <Route path="configparams" element={<ConfigParams />} />
         <Route path="recommendations" element={<Recommendations />} />
-        <Route path="history" element={<History />} />
         <Route path="admin" element={<Admin />} />
       </Route>
     </Routes>

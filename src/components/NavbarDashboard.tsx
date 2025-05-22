@@ -1,19 +1,37 @@
-import { ChartLine, Table } from "lucide-react";
-import React from "react";
+import { useEffect, useState } from "react";
 
-const NavbarDashboard: React.FC = () => (
-  <header className="dashboard-navbar">
-    <nav className="dashboard-navbar__links">
-      <a href="#">
-        <p>Detalles</p>
-        <ChartLine />
-      </a>
-      <a href="#">
-        <Table />
-        <p>Campos</p>
-      </a>
+const NavbarDashboard: React.FC<{ currentUrl: string }> = ({ currentUrl }) => {
+  type NavLocationType = {
+    path: string;
+    locationName: string;
+  };
+  const [locations, setLocations] = useState([] as NavLocationType[]);
+  useEffect(() => {
+    const locationsTemp = [] as NavLocationType[];
+    let currentUrlBuild = "/";
+    currentUrl
+      .split("/")
+      .splice(1)
+      .forEach((locationName) => {
+        locationsTemp.push({
+          path: currentUrlBuild + locationName,
+          locationName:
+            locationName.charAt(0).toUpperCase() + locationName.slice(1),
+        });
+        currentUrlBuild += locationName + "/";
+      });
+    setLocations(locationsTemp);
+  }, [currentUrl]);
+  return (
+    <nav className="dashboard-navbar">
+      {locations.map(({ path, locationName }, index) => (
+        <div key={index}>
+          <a href={path}>{locationName}</a>
+          {index < locations.length - 1 && <span>&gt;</span>}
+        </div>
+      ))}
     </nav>
-  </header>
-);
+  );
+};
 
 export default NavbarDashboard;

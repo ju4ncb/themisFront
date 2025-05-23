@@ -1,9 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ArchivoSalarial } from "../models/ArchivoSalarial";
+import type { RegistroSalarial } from "../models/RegistroSalarial";
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface ArchivoSalarialContextType {
   archivoSalarial: ArchivoSalarial | null;
-  setArchivoSalarial: (archivoSalarial: ArchivoSalarial | null) => void;
+  setArchivoSalarial: (
+    archivoSalarial: ArchivoSalarial | null
+  ) => Promise<void>;
   estaAutenticado: boolean;
 }
 
@@ -25,10 +29,33 @@ export const ArchivoSalarialProvider = ({
     if (stored) setArchivoSalarialState(JSON.parse(stored));
   }, []);
 
-  const setArchivoSalarial = (archivoSalarial: ArchivoSalarial | null) => {
+  const setArchivoSalarial = async (
+    archivoSalarial: ArchivoSalarial | null
+  ) => {
     setArchivoSalarialState(archivoSalarial);
     if (archivoSalarial) {
-      localStorage.setItem("archivoSalarial", JSON.stringify(archivoSalarial));
+      try {
+        const response = await fetch(
+          `${API_URL}/registrossalariales/archivo/${archivoSalarial.id_archivo}`
+        );
+        if (response.status == 200) {
+          const registrosSalariales =
+            (await response.json()) as RegistroSalarial[];
+          archivoSalarial.contenido = registrosSalariales;
+        } else {
+          throw Error("No fue posible rescatar el contenido del archivo.");
+        }
+        console.log(archivoSalarial.contenido);
+        localStorage.setItem(
+          "archivoSalarial",
+          JSON.stringify(archivoSalarial)
+        );
+      } catch (e) {
+        localStorage.setItem(
+          "archivoSalarial",
+          JSON.stringify(archivoSalarial)
+        );
+      }
     } else {
       localStorage.removeItem("archivoSalarial");
     }

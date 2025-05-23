@@ -17,7 +17,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const loadDatasets = async () => {
       const response = await fetch(`${API_URL}/archivossalariales`);
-      if (response.status == 201) {
+      if (response.status == 200) {
         const archsal = await response.json();
         setArchivosSalariales(archsal);
       }
@@ -56,17 +56,40 @@ const Dashboard: React.FC = () => {
           ) : (
             <>
               <CardButton title="Número de filas">
-                <span className="card_number"></span>
+                <span className="card_number">
+                  {archivoSalarial.contenido?.length}
+                </span>
               </CardButton>
               <CardButton title="Número de columnas">
-                <span className="card_number"></span>
+                <span className="card_number">
+                  {archivoSalarial.contenido
+                    ? Object.keys(archivoSalarial.contenido[0]).length
+                    : 0}
+                </span>
               </CardButton>
               <CardButton title="Tamaño">
-                <span className="card_number">{archivoSalarial.tamano}</span>
-              </CardButton>
-              <CardButton title="Fecha">
                 <span className="card_number">
-                  {archivoSalarial.created_at}
+                  {(archivoSalarial.tamano / 1024).toFixed(2)} kB
+                </span>
+              </CardButton>
+              <CardButton title="Fecha creado">
+                <span className="card_number">
+                  {(() => {
+                    const date = new Date(archivoSalarial.created_at);
+                    const year = date.getFullYear();
+                    const month = date.getMonth() + 1;
+                    const day = date.getDate();
+                    let hours = date.getHours();
+                    const minutes = String(date.getMinutes()).padStart(2, "0");
+                    const seconds = String(date.getSeconds()).padStart(2, "0");
+                    const ampm = hours >= 12 ? "p.m." : "a.m.";
+                    hours = hours % 12;
+                    hours = hours ? hours : 12; // the hour '0' should be '12'
+                    return `${year}-${month}-${day} ${String(hours).padStart(
+                      2,
+                      "0"
+                    )}:${minutes}:${seconds} ${ampm}`;
+                  })()}
                 </span>
               </CardButton>
             </>

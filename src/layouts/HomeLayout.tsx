@@ -7,7 +7,9 @@ const HomeLayout = () => {
   return (
     <>
       <nav className="sidebar">
-        <img src={logo} alt="icon" />
+        <Link to="/" className="sidebar-logo">
+          <img src={logo} alt="logo" />
+        </Link>
         <ul className="links">
           <NavLink
             to="/"

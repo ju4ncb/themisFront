@@ -56,9 +56,11 @@ select:focus {
   transform: translateY(-50%);
   margin-left: 30px;
   border-radius: 10px;
-  img {
-    width: 105px;
-    margin: 10px 0;
+  .sidebar-logo {
+    margin: 1rem 0;
+    img {
+      width: 105px;
+    }
   }
   .links {
     width: 125px;
@@ -75,6 +77,9 @@ select:focus {
       width: 100%;
       padding: 1rem 20px;
       font-size: 16px;
+      &:hover {
+        color: $color-contrast-2;
+      }
     }
   }
 }
@@ -291,6 +296,8 @@ select:focus {
   .main-content {
     display: grid;
     place-items: center;
+    background-image: url("./assets/garabatos.png");
+    background-size: 200px;
     width: calc(100vw - $sidebar-width);
     min-height: 100vh;
     margin-left: $sidebar-width;

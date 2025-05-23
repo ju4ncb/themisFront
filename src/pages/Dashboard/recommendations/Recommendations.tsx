@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Info, Check, Calendar } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import "./Recommendations.scss";
 
 interface Recomendacion {
@@ -22,8 +21,6 @@ quis nostrud exercitation ullamco laboris nisi ut aliquip ex.`,
 };
 
 const Recommendations: React.FC = () => {
-  const nav = useNavigate();
-
   // En un caso real traerías la recomendación desde tu API/context
   const rec = mock;
 
@@ -64,7 +61,7 @@ const Recommendations: React.FC = () => {
 
         <button
           className="btn btn--secondary back-button"
-          onClick={() => nav(-1)}
+          onClick={() => window.location.assign("/dashboard/home")}
         >
           Volver
         </button>

@@ -1,3 +1,5 @@
+import type { RegistroSalarial } from "./RegistroSalarial";
+
 export interface ArchivoSalarialReducido {
   id_usuario: number;
   nombre_archivo: string;
@@ -9,4 +11,5 @@ export interface ArchivoSalarial extends ArchivoSalarialReducido {
   id_archivo: number;
   created_at: string;
   updated_at: string;
+  contenido?: RegistroSalarial[];
 }

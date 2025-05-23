@@ -16,10 +16,10 @@ const SubirCargarArchivo: React.FC<Props> = ({
   const { usuario } = useUsuario();
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value !== "") {
-      setArchivoSalarial(JSON.parse(e.target.value));
+      await setArchivoSalarial(JSON.parse(e.target.value));
       setNavBarActive(true);
     } else {
-      setArchivoSalarial(null);
+      await setArchivoSalarial(null);
       setNavBarActive(false);
     }
   };
@@ -36,15 +36,20 @@ const SubirCargarArchivo: React.FC<Props> = ({
         <select
           id="archivo-select"
           className="dashboard__subir-cargar-archivo__select"
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
           value={
-            archivoSalarial !== null ? JSON.stringify(archivoSalarial) : ""
+            archivoSalarial !== null
+              ? JSON.stringify({ ...archivoSalarial, contenido: undefined })
+              : ""
           }
         >
           <option value="">-- Elige un archivo --</option>
-          {archivosSalariales.map((archivoSalarial, index) => (
-            <option value={JSON.stringify(archivoSalarial)} key={index}>
-              {archivoSalarial.nombre_archivo}
+          {archivosSalariales.map((archivo, index) => (
+            <option
+              value={JSON.stringify({ ...archivo, contenido: undefined })}
+              key={index}
+            >
+              {archivo.nombre_archivo}
             </option>
           ))}
         </select>

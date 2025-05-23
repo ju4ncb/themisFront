@@ -48,10 +48,19 @@ const SubirCargarArchivo: React.FC<Props> = ({
             </option>
           ))}
         </select>
-        {archivoSalarial === null && (
+        {archivoSalarial === null ? (
           <button onClick={() => window.location.assign("/dashboard/upload")}>
             Subir csv
           </button>
+        ) : (
+          <>
+            <button onClick={() => window.location.assign("/dashboard/graphs")}>
+              Explorar datos
+            </button>
+            <button onClick={() => window.location.assign("/dashboard/train")}>
+              Entrenar modelo
+            </button>
+          </>
         )}
       </section>
     </div>

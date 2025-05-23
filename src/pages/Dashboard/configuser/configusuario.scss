@@ -1,0 +1,98 @@
+@import "../../../colors.scss";
+
+.config-user-container {
+  display: grid;
+  padding: 2rem;
+  height: 100%;
+  width: 100%;
+  place-items: center;
+  .config-user-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    place-self: end center;
+  }
+  .config-user-form {
+    place-self: start center;
+    background: $color-bg-2;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    .config-user-fieldset {
+      border: 1px solid $color-contrast-2;
+      border-radius: 0.375rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.25rem;
+      .config-user-legend {
+        padding: 0 0.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        color: $color-contrast-2;
+      }
+      /* Filas de campos */
+      .form-row {
+        width: 100%;
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
+
+        &.single {
+          flex-direction: column;
+          margin-top: 0.5rem;
+        }
+        @media (max-width: 600px) {
+          &.single {
+            flex-direction: row;
+          }
+        }
+        /* Campo individual */
+        .form-field {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+
+          label {
+            font-size: 0.85rem;
+            color: $color-contrast-2;
+            margin-bottom: 0.25rem;
+          }
+
+          input {
+            padding: 0.5rem;
+            background: none;
+            border: 1px solid $color-contrast-2;
+            border-radius: 0.25rem;
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+        .password-field {
+          .password-input-wrapper {
+            position: relative;
+            display: flex;
+
+            input {
+              flex: 1;
+              padding-right: 2.5rem;
+            }
+            .password-toggle {
+              position: absolute;
+              top: 50%;
+              right: 0.5rem;
+              transform: translateY(-50%);
+              background: transparent;
+              border: none;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      /* Botón principal */
+      .config-user-submit {
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}

@@ -164,6 +164,7 @@ const Dashboard: React.FC = () => {
       ) : (
         <main className="dashboard__table">
           <Table
+            ignoreId={true}
             data={archivoSalarial?.contenido?.map(
               ({ fila_registro, id_registro }) => ({
                 ...JSON.parse(fila_registro),

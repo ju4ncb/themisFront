@@ -1,0 +1,321 @@
+@import "../../../colors.scss";
+
+.train {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  .container-train {
+    display: grid;
+    place-items: center;
+    grid-template-columns: 50% 50%;
+    gap: 40px;
+    width: 100%;
+    height: 100%;
+    .btn-1 {
+      padding: 10px 20px;
+      background: linear-gradient(
+        to right,
+        $color-contrast-4,
+        $color-contrast-5
+      );
+      border: none;
+      border-radius: 6px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: filter 0.3s ease;
+      cursor: pointer;
+      width: 150px;
+      align-self: center;
+      &:hover {
+        filter: brightness(130%);
+      }
+    }
+    .btn-2 {
+      transition: filter 0.3s ease;
+      background: $color-contrast-4;
+      &:hover {
+        filter: brightness(120%);
+      }
+    }
+    .panel-variable,
+    .resumen {
+      width: min(500px, 90%);
+      background-color: $color-bg-5;
+      border-radius: 10px;
+      border: 2px solid $color-bg-2;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      h2 {
+        font-family: "Margarine", cursive;
+        text-align: start;
+        color: $color-contrast-3;
+        margin-bottom: 5px;
+      }
+    }
+    .panel-variable {
+      place-self: center end;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      .panel-arriba {
+        font-family: "Margarine", cursive;
+        text-align: center;
+        background-color: $color-bg-3;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        .botones {
+          display: flex;
+          justify-content: space-around;
+          margin: 15px 0;
+          gap: 0.8rem;
+
+          button {
+            padding: 6px 18px;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-family: "Martian Mono", monospace;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
+            transition: transform 0.15s cubic-bezier(0.4, 2, 0.6, 1),
+              box-shadow 0.2s, filter 0.2s;
+            position: relative;
+            overflow: hidden;
+
+            &:hover,
+            &:focus {
+              filter: brightness(1.15) saturate(1.2);
+              transform: translateY(-2px) scale(1.04);
+              box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+              z-index: 1;
+            }
+
+            &::after {
+              content: "";
+              position: absolute;
+              left: 0;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              opacity: 0.12;
+              pointer-events: none;
+              border-radius: inherit;
+              background: linear-gradient(120deg, #fff 0%, transparent 100%);
+              transition: opacity 0.3s;
+            }
+          }
+
+          .entrada {
+            background: linear-gradient(90deg, #0c8a40d3 60%, #1ed760 100%);
+          }
+          .sensible {
+            background: linear-gradient(90deg, #197a86 60%, #2ec4d6 100%);
+          }
+          .salida {
+            background: linear-gradient(90deg, #9c0e0e 60%, #e74c3c 100%);
+          }
+        }
+        .tipo-variable {
+          text-align: center;
+          margin: 14px 0 10px 0;
+          font-family: "Martian Mono", monospace;
+          font-size: 15px;
+          color: $color-contrast-3;
+          border-radius: 5px;
+          padding: 7px 0;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+        }
+      }
+      .variables-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        h3 {
+          text-align: center;
+          font-family: "Martian Mono", monospace;
+        }
+        .variables {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-evenly;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 10px;
+          border-radius: 5px;
+          background-color: $color-bg-3;
+          .disabled {
+            opacity: 0.5;
+            filter: grayscale(60%);
+          }
+          button {
+            transition: transform 0.15s cubic-bezier(0.4, 2, 0.6, 1),
+              box-shadow 0.2s, filter 0.2s;
+            position: relative;
+            overflow: hidden;
+
+            &:hover,
+            &:focus {
+              filter: brightness(1.15) saturate(1.2);
+              transform: translateY(-2px) scale(1.04);
+              box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+              z-index: 1;
+            }
+
+            &::after {
+              content: "";
+              position: absolute;
+              left: 0;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              opacity: 0.12;
+              pointer-events: none;
+              border-radius: inherit;
+              background: linear-gradient(120deg, #fff 0%, transparent 100%);
+              transition: opacity 0.3s;
+            }
+          }
+        }
+        .btn {
+          background-color: $color-bg-2;
+          &:hover {
+            background-color: $color-bg-4;
+          }
+        }
+      }
+    }
+
+    .resumen {
+      place-self: center start;
+      display: flex;
+      flex-direction: column;
+      .resumen-variables {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        margin-bottom: 1.5rem;
+
+        .pill-entrada,
+        .pill-salida,
+        .pill-sensible,
+        .pill-error {
+          background-color: $color-bg-3;
+          border-radius: 8px;
+          padding: 14px 18px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          strong {
+            color: $color-contrast-3;
+            font-family: "Martian Mono", monospace;
+            margin-bottom: 2px;
+          }
+        }
+
+        .pill-entrada {
+          border-left: 5px solid #0c8a40d3;
+          .entradas {
+            margin: 0;
+            padding-left: 1.2em;
+            li {
+              color: #0c8a40;
+              font-family: "Martian Mono", monospace;
+              font-size: 0.98em;
+            }
+          }
+        }
+
+        .pill-salida {
+          border-left: 5px solid #9c0e0e;
+          p {
+            color: #9c0e0e;
+            margin: 0;
+            font-family: "Martian Mono", monospace;
+          }
+        }
+
+        .pill-sensible {
+          border-left: 5px solid #197a86;
+          p {
+            color: #197a86;
+            margin: 0;
+            font-family: "Martian Mono", monospace;
+          }
+        }
+
+        .pill-error {
+          border-left: 5px solid #e74c3c;
+          background-color: #fff0f0;
+          strong {
+            color: #e74c3c;
+          }
+          p {
+            color: #e74c3c;
+            margin: 0;
+            font-family: "Martian Mono", monospace;
+          }
+        }
+      }
+      .modelo-selector {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 1.2rem;
+
+        label {
+          font-family: "Martian Mono", monospace;
+          color: $color-contrast-3;
+          font-size: 1em;
+        }
+
+        .combo-modelos {
+          padding: 8px 14px;
+          border-radius: 6px;
+          border: 1.5px solid $color-bg-2;
+          background-color: $color-bg-3;
+          color: $color-contrast-3;
+          font-family: "Martian Mono", monospace;
+          font-size: 1em;
+          transition: border-color 0.2s;
+
+          &:focus {
+            outline: none;
+            border-color: $color-contrast-4;
+            background-color: $color-bg-4;
+          }
+        }
+      }
+    }
+  }
+  .img-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+    background-color: $color-bg-3;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    width: min(500px, 90%);
+    h3 {
+      font-family: "Martian Mono", monospace;
+      color: $color-contrast-3;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    img {
+      display: block;
+      max-width: 100%;
+      max-height: 400px;
+      border-radius: 8px;
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+      background: #fff;
+      margin: 0 auto;
+    }
+  }
+}

@@ -32,9 +32,13 @@ const Table: React.FC<Props> = ({ data, actions, ignoreId }) => {
       <table>
         <thead>
           <tr>
-            {Object.keys(data[0] || {}).map((key) => (
-              <th key={key}>{key}</th>
-            ))}
+            {Object.keys(data[0] || {})
+              .filter(
+                (key) => !(ignoreId && key.toLowerCase().startsWith("id"))
+              )
+              .map((key) => (
+                <th key={key}>{key}</th>
+              ))}
             {actions && <th>Actions</th>}
           </tr>
         </thead>

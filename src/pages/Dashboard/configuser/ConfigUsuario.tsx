@@ -1,69 +1,119 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { useUsuario } from "../../../contexts/UsuarioContext";
+import "./configusuario.scss";
+import Swal from "sweetalert2";
+import type { Usuario } from "../../../models/Usuario";
+const API_URL = import.meta.env.VITE_API_URL;
+
+type FormValues = {
+  nombreusuario: string;
+  nombres: string;
+  apellidos: string;
+  direccion: string;
+  telefono: string;
+  email: string;
+  password: string;
+};
 
 const ConfigUsuario: React.FC = () => {
   const { usuario, setUsuario } = useUsuario();
-
-  // Estados locales para los campos del formulario
-  const [username, setUsername] = useState("");
-  const [nombres, setNombres] = useState("");
-  const [apellidos, setApellidos] = useState("");
-  const [direccion, setDireccion] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
 
-  // Al montar, cargamos los datos del usuario en los estados locales
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      nombreusuario: "",
+      nombres: "",
+      apellidos: "",
+      direccion: "",
+      telefono: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  // Cargar datos usuario en el formulario al montar
   useEffect(() => {
     if (usuario) {
-      setUsername(usuario.nombreusuario || "");
-      setNombres(usuario.nombres || "");
-      setApellidos(usuario.apellidos || "");
-      setDireccion(usuario.direccion || "");
-      setTelefono(usuario.telefono || "");
-      setEmail(usuario.correo || "");
+      setValue("nombreusuario", usuario.nombreusuario || "");
+      setValue("nombres", usuario.nombres || "");
+      setValue("apellidos", usuario.apellidos || "");
+      setValue("direccion", usuario.direccion || "");
+      setValue("telefono", usuario.telefono || "");
+      setValue("email", usuario.correo || "");
       // No cargamos password real por seguridad
     }
-  }, [usuario]);
+  }, [usuario, setValue]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Creamos el nuevo objeto usuario con los valores del formulario
+  const onSubmit = async (data: FormValues) => {
     const updated = {
       ...usuario!,
-      username,
-      nombres,
-      apellidos,
-      direccion,
-      telefono,
-
-      email,
-      // password: (si permites cambiarla)
+      nombreusuario: data.nombreusuario,
+      nombres: data.nombres,
+      apellidos: data.apellidos,
+      direccion: data.direccion,
+      telefono: data.telefono,
+      correo: data.email,
+      // password: data.password (si permites cambiarla)
     };
-    setUsuario(updated);
-    // Aquí podrías llamar a tu API para persistir los cambios
+    try {
+      const response = await fetch(
+        `${API_URL}/usuarios/${usuario?.nombreusuario}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updated),
+        }
+      );
+      const usuarioNuevo = await response.json();
+      if (usuarioNuevo !== undefined && usuarioNuevo.nombres !== undefined) {
+        Swal.fire({
+          icon: "success",
+          title: "Actualización exitosa",
+          text: `Usuario actualizado con éxito.`,
+        }).then(() => {
+          setUsuario(usuarioNuevo as Usuario);
+          window.location.assign("/dashboard/");
+        });
+      } else {
+        throw Error();
+      }
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error al actualizar los datos de la cuenta.",
+      });
+    }
   };
 
   return (
     <div className="config-user-container">
       <h2 className="config-user-title">Configuración usuario</h2>
-      <form className="config-user-form" onSubmit={handleSubmit}>
+      <form className="config-user-form" onSubmit={handleSubmit(onSubmit)}>
         {/* === Información usuario === */}
         <fieldset className="config-user-fieldset">
           <legend className="config-user-legend">Información usuario</legend>
 
-          {/* Username */}
+          {/* Email */}
           <div className="form-row single">
             <div className="form-field">
-              <label htmlFor="username">Nombre usuario</label>
+              <label htmlFor="email">Correo</label>
               <input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                id="email"
+                type="email"
+                {...register("email", { required: true })}
               />
+              {errors.email && <span>Este campo es requerido</span>}
             </div>
           </div>
 
@@ -74,18 +124,18 @@ const ConfigUsuario: React.FC = () => {
               <input
                 id="nombres"
                 type="text"
-                value={nombres}
-                onChange={(e) => setNombres(e.target.value)}
+                {...register("nombres", { required: true })}
               />
+              {errors.nombres && <span>Este campo es requerido</span>}
             </div>
             <div className="form-field">
               <label htmlFor="apellidos">Apellidos</label>
               <input
                 id="apellidos"
                 type="text"
-                value={apellidos}
-                onChange={(e) => setApellidos(e.target.value)}
+                {...register("apellidos", { required: true })}
               />
+              {errors.apellidos && <span>Este campo es requerido</span>}
             </div>
           </div>
 
@@ -93,25 +143,15 @@ const ConfigUsuario: React.FC = () => {
           <div className="form-row single">
             <div className="form-field">
               <label htmlFor="direccion">Dirección (opcional)</label>
-              <input
-                id="direccion"
-                type="text"
-                value={direccion}
-                onChange={(e) => setDireccion(e.target.value)}
-              />
+              <input id="direccion" type="text" {...register("direccion")} />
             </div>
           </div>
 
-          {/* Teléfono / Fecha de nacimiento */}
+          {/* Teléfono */}
           <div className="form-row">
             <div className="form-field">
               <label htmlFor="telefono">Teléfono (opcional)</label>
-              <input
-                id="telefono"
-                type="tel"
-                value={telefono}
-                onChange={(e) => setTelefono(e.target.value)}
-              />
+              <input id="telefono" type="tel" {...register("telefono")} />
             </div>
           </div>
         </fieldset>
@@ -119,17 +159,16 @@ const ConfigUsuario: React.FC = () => {
         {/* === Información login === */}
         <fieldset className="config-user-fieldset">
           <legend className="config-user-legend">Información login</legend>
-
-          {/* Email */}
+          {/* Nombre de usuario */}
           <div className="form-row single">
             <div className="form-field">
-              <label htmlFor="email">Correo</label>
+              <label htmlFor="nombreusuario">Nombre usuario</label>
               <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="nombreusuario"
+                type="text"
+                {...register("nombreusuario", { required: true })}
               />
+              {errors.nombreusuario && <span>Este campo es requerido</span>}
             </div>
           </div>
 
@@ -141,14 +180,14 @@ const ConfigUsuario: React.FC = () => {
                 <input
                   id="password"
                   type={showPwd ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  {...register("password")}
                   placeholder="**********"
                 />
                 <button
                   type="button"
                   className="password-toggle"
                   onClick={() => setShowPwd((v) => !v)}
+                  tabIndex={-1}
                 >
                   {showPwd ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -157,7 +196,7 @@ const ConfigUsuario: React.FC = () => {
           </div>
         </fieldset>
 
-        <button type="submit" className="btn btn--primary config-user-submit">
+        <button type="submit" className="config-user-submit">
           Guardar cambios
         </button>
       </form>

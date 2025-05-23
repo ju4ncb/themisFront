@@ -8,12 +8,12 @@ import type { ArchivoSalarial } from "../../../models/ArchivoSalarial";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Dashboard: React.FC = () => {
+  const { archivoSalarial } = useArchivoSalarial();
   const [isDetalles, setIsDetalles] = useState(true);
   const [navBarActive, setNavBarActive] = useState(false);
   const [archivosSalariales, setArchivosSalariales] = useState<
     ArchivoSalarial[]
   >([]);
-  const { archivoSalarial, setArchivoSalarial } = useArchivoSalarial();
   useEffect(() => {
     const loadDatasets = async () => {
       const response = await fetch(`${API_URL}/archivossalariales`);
@@ -26,7 +26,7 @@ const Dashboard: React.FC = () => {
       setNavBarActive(true);
     }
     loadDatasets();
-  }, []);
+  }, [archivoSalarial]);
   return (
     <div className={navBarActive ? "dashboard with-navbar" : "dashboard"}>
       {navBarActive && (

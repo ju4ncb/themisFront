@@ -1,6 +1,7 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import logo from "../assets/themis-logo-2-white.png";
 import {
+  BrainCircuit,
   ChartBarStacked,
   History,
   Home,
@@ -64,6 +65,11 @@ const DashboardLayout = () => {
           name="Explorar datos"
           Icon={ChartBarStacked}
           path="/dashboard/graphs"
+        />,
+        <CustomLink
+          name="Entrenar modelo"
+          Icon={BrainCircuit}
+          path="/dashboard/train"
         />,
         <CustomLink
           name="Recomendaciones"

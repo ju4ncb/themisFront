@@ -47,7 +47,6 @@
     min-height: 100%;
     place-items: center;
     grid-template-rows: 280px auto;
-
     .dashboard__subir-cargar-archivo {
       place-self: start;
       display: flex;
@@ -80,12 +79,21 @@
       }
     }
     .dashboard__cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
       width: 100%;
       max-width: 1100px;
-      margin-top: 2rem;
+      .container-cardbutton {
+        width: 340px;
+        justify-content: center;
+        min-height: 150px;
+        max-height: none;
+        display: flex;
+        flex-direction: column;
+      }
     }
   }
 }

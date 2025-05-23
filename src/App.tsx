@@ -20,6 +20,7 @@ import { UsuarioProvider } from "./contexts/UsuarioContext";
 import AuthLayout from "./layouts/AuthLayout";
 import { RequiereAcceso, RequiereNoAcceso } from "./components/RutasProtegidas";
 import { ArchivoSalarialProvider } from "./contexts/ArchivoSalarialContext";
+import Train from "./pages/Dashboard/train/Train";
 
 const App: React.FC = () => (
   <UsuarioProvider>
@@ -56,6 +57,7 @@ const App: React.FC = () => (
         <Route path="home" element={<Dashboard />} />
         <Route path="configusuario" element={<ConfigUsuario />} />
         <Route path="upload" element={<Upload />} />
+        <Route path="train" element={<Train />} />
         <Route path="graphs" element={<Graphs />} />
         <Route path="configparams" element={<ConfigParams />} />
         <Route path="recommendations" element={<Recommendations />} />

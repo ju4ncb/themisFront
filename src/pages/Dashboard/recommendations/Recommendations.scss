@@ -1,21 +1,25 @@
 /* Recommendations.scss */
 
+@import "../../../colors.scss";
+
 .recommendations-content {
   padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: $color-bg-5;
 }
 
 .page-title {
   font-size: 1.75rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
+  color: $color-contrast-3;
 }
 
 .recommendation-card {
-  background: #fff;
-  border: 1px solid #cbd5e0;
+  background: $color-bg-4;
+  border: 1px solid $color-bg-2;
   border-radius: 0.5rem;
   padding: 1.5rem;
   width: 100%;
@@ -34,13 +38,13 @@
 
 /* Ícono */
 .recommendation-card .icon {
-  color: #4a5568;
+  color: $color-contrast-4;
 }
 
 /* Etiqueta */
 .recommendation-card .label {
   font-weight: 500;
-  color: #2d3748;
+  color: $color-contrast;
 }
 
 /* Punto de prioridad */
@@ -52,7 +56,7 @@
 }
 
 .priority-dot.alta {
-  background: #e53e3e; /* Rojo */
+  background: #e53e3e; /* Rojo primario, se puede sobreescribir con variable si la hay */
 }
 
 .priority-dot.media {
@@ -66,29 +70,29 @@
 /* Texto de recomendación */
 .recommendation-text {
   margin-left: 1.75rem; /* para alinear con icono */
-  color: #4a5568;
+  color: $color-contrast-2;
   line-height: 1.4;
 }
 
 /* Valor secundario (id, fecha) */
 .recommendation-card .value {
   margin-left: auto;
-  color: #4a5568;
+  color: $color-contrast-2;
 }
 
 /* Botón Volver */
 .back-button {
   margin-top: 2rem;
   padding: 0.5rem 1rem;
-  border: 1px solid #4a5568;
+  border: 1px solid $color-contrast-2;
   background: transparent;
-  color: #4a5568;
+  color: $color-contrast-2;
   border-radius: 0.25rem;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
 
 .back-button:hover {
-  background: #4a5568;
-  color: #fff;
+  background: $color-contrast-2;
+  color: $color-text;
 }

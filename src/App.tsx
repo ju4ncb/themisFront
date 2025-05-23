@@ -6,6 +6,7 @@ import About from "./pages/about/About";
 import Contact from "./pages/contact/Contact";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
+import AboutUs from "./pages/about-us/AboutUs";
 
 import Dashboard from "./pages/Dashboard/home/home";
 import ConfigUsuario from "./pages/Dashboard/configuser/ConfigUsuario";
@@ -29,6 +30,7 @@ const App: React.FC = () => (
       <Route element={<HomeLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="about" element={<About />} />
+        <Route path="about-us" element={<AboutUs />} />
         <Route path="contact" element={<Contact />} />
       </Route>
       {/* Login */}

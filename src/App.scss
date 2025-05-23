@@ -89,6 +89,7 @@ select:focus {
   min-height: 100vh;
   display: grid;
   place-items: center;
+
   .content-container {
     display: flex;
     width: 100%;
@@ -96,6 +97,8 @@ select:focus {
     justify-content: space-around;
     flex-direction: column;
     min-height: 100vh;
+    background-image: url("./assets/garabatos.png");
+    background-size: 200px;
     .login-navbar {
       background: $color-bg-2;
       border-bottom-left-radius: 25px;
@@ -127,6 +130,7 @@ select:focus {
   flex-direction: row;
   width: 100vw;
   min-height: 100vh;
+
   .sidebar-dashboard {
     position: fixed;
     display: flex;

@@ -29,6 +29,12 @@ const HomeLayout = () => {
           >
             Contact
           </NavLink>
+          <NavLink
+            to="/about-us"
+            className={({ isActive }) => (isActive ? "active-link" : "")}
+          >
+            About Us
+          </NavLink>
         </ul>
       </nav>
       <div className="home-layout">

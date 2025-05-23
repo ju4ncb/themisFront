@@ -8,7 +8,7 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 
 import Dashboard from "./pages/Dashboard/home/home";
-import ConfigUsuario from "./pages/Dashboard/configuser/ConfigUser";
+import ConfigUsuario from "./pages/Dashboard/configuser/ConfigUsuario";
 import Upload from "./pages/Dashboard/upload/Upload";
 import Graphs from "./pages/Dashboard/graphs/Graphs";
 import ConfigParams from "./pages/Dashboard/configparams/ConfigParams";

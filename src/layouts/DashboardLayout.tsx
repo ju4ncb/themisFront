@@ -44,7 +44,7 @@ const DashboardLayout = () => {
               <ul className="user-menu-list">
                 <li>
                   <UserCog />
-                  <Link to="/dashboard/configuser">Configuración</Link>
+                  <Link to="/dashboard/configusuario">Configuración</Link>
                 </li>
                 <li>
                   <LogOut />

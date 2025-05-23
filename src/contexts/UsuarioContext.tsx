@@ -28,6 +28,7 @@ export const UsuarioProvider = ({
       localStorage.setItem("usuario", JSON.stringify(usuario));
     } else {
       localStorage.removeItem("usuario");
+      localStorage.removeItem("archivoSalarial");
     }
   };
 

@@ -17,7 +17,8 @@ const Train = () => {
   );
   const [modelos, setModelos] = useState<string[]>([]);
   const [modeloEscogido, setModeloEscogido] = useState("");
-  const [imgBase64, setImgBase64] = useState<string>("");
+  const [imgBase64Overfitting, setImgBase64Overfitting] = useState<string>("");
+  const [imgBase64Fairness, setImgBase64Fairness] = useState<string>("");
   useEffect(() => {
     fetch(`${API_URL}/ai/modelos`)
       .then((res) => res.json())
@@ -140,8 +141,11 @@ const Train = () => {
           icon: "success",
           width: 600,
         });
-        if (resultados?.actual_vs_predicted_plot) {
-          setImgBase64(resultados.actual_vs_predicted_plot);
+        if (resultados?.overfitting_plot) {
+          setImgBase64Overfitting(resultados.overfitting_plot);
+        }
+        if (resultados?.fairness_plot) {
+          setImgBase64Fairness(resultados.fairness_plot);
         }
       })
       .catch((error) => {
@@ -303,13 +307,24 @@ const Train = () => {
             </button>
           </div>
         </div>
-        {imgBase64 && (
-          <div className="img-container">
-            <h3>Imagen generada</h3>
-            <img
-              src={`data:image/png;base64,${imgBase64}`}
-              alt="Resultado del modelo"
-            />
+        {imgBase64Overfitting && (
+          <div className="train-img">
+            <div className="img-container">
+              <h3>Test overfiting</h3>
+              <img
+                src={`data:image/png;base64,${imgBase64Overfitting}`}
+                alt="Resultado del modelo"
+              />
+            </div>
+            {imgBase64Fairness && (
+              <div className="img-container">
+                <h3>Test equidad por {variableSensible}</h3>
+                <img
+                  src={`data:image/png;base64,${imgBase64Fairness}`}
+                  alt="Equidad del modelo"
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

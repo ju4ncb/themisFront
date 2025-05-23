@@ -8,10 +8,12 @@ import type { ArchivoSalarial } from "../../../models/ArchivoSalarial";
 import Table from "../../../components/Table";
 import { Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
+import { useUsuario } from "../../../contexts/UsuarioContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Dashboard: React.FC = () => {
+  const { usuario } = useUsuario();
   const { archivoSalarial, setArchivoSalarial } = useArchivoSalarial();
   const [isDetalles, setIsDetalles] = useState(true);
   const [navBarActive, setNavBarActive] = useState(false);
@@ -24,7 +26,9 @@ const Dashboard: React.FC = () => {
   );
   useEffect(() => {
     const loadDatasets = async () => {
-      const response = await fetch(`${API_URL}/archivossalariales`);
+      const response = await fetch(
+        `${API_URL}/archivossalariales/usuarios/${usuario?.id_usuario}`
+      );
       if (response.status == 200) {
         const archsal = await response.json();
         setArchivosSalariales(archsal);

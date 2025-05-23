@@ -42,8 +42,8 @@ const SubirCargarArchivo: React.FC<Props> = ({
           }
         >
           <option value="">-- Elige un archivo --</option>
-          {archivosSalariales.map((archivoSalarial) => (
-            <option value={JSON.stringify(archivoSalarial)}>
+          {archivosSalariales.map((archivoSalarial, index) => (
+            <option value={JSON.stringify(archivoSalarial)} key={index}>
               {archivoSalarial.nombre_archivo}
             </option>
           ))}

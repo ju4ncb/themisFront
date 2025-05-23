@@ -1,4 +1,4 @@
-import { Outlet, Link, NavLink, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import logo from "../assets/themis-logo-2-white.png";
 import {
   ChartBarStacked,
@@ -14,13 +14,103 @@ import {
   UserCog2,
 } from "lucide-react";
 import { useUsuario } from "../contexts/UsuarioContext";
-import { useState } from "react";
+import { useEffect, useState, type JSX } from "react";
 import NavbarDashboard from "../components/NavbarDashboard";
+import CustomLink from "../components/CustomLink";
+import { useArchivoSalarial } from "../contexts/ArchivoSalarialContext";
 
 const DashboardLayout = () => {
   const [dropdownActive, setDropdownActive] = useState(false);
   const { usuario, setUsuario } = useUsuario();
+  const { archivoSalarial } = useArchivoSalarial();
   const location = useLocation();
+  const [linksShown, setLinksShown] = useState([
+    <CustomLink name="Inicio dashboard" Icon={Home} path="/dashboard/home" />,
+    <CustomLink
+      name="Subir archivo"
+      Icon={UploadCloud}
+      path="/dashboard/upload"
+    />,
+  ]);
+  const amountOfLines = (linkShown: JSX.Element) => {
+    const words = linkShown.props.name.split(" ");
+    if (linkShown.props.isDisabled) {
+      words.push("(en");
+      words.push("desarrollo)");
+    }
+    let lines = 0;
+    let lineSpacesLeft = 17;
+    words.forEach((word: string) => {
+      if (word.length > 17) {
+        lines += Math.floor(word.length / 17);
+        lineSpacesLeft = 17 - word.length - 1;
+        return;
+      }
+      if (word.length > lineSpacesLeft) {
+        lineSpacesLeft = 17 - word.length - 1;
+        lines += 1;
+      } else {
+        lineSpacesLeft -= word.length - 1;
+      }
+    });
+    return lines;
+  };
+
+  useEffect(() => {
+    if (archivoSalarial !== null && linksShown.length <= 3)
+      setLinksShown((prev) => [
+        ...prev,
+        <CustomLink
+          name="Explorar datos"
+          Icon={ChartBarStacked}
+          path="/dashboard/graphs"
+        />,
+        <CustomLink
+          name="Recomendaciones"
+          Icon={Lightbulb}
+          path="/dashboard/recommendations"
+        />,
+        <CustomLink
+          name="Configurar hiperparámetros"
+          Icon={Settings2}
+          path="#"
+          isDisabled={true}
+        />,
+        <CustomLink
+          name="Historial"
+          Icon={History}
+          path="#"
+          isDisabled={true}
+        />,
+      ]);
+    else if (archivoSalarial === null) {
+      setLinksShown([
+        <CustomLink
+          name="Inicio dashboard"
+          Icon={Home}
+          path="/dashboard/home"
+        />,
+        <CustomLink
+          name="Subir archivo"
+          Icon={UploadCloud}
+          path="/dashboard/upload"
+        />,
+      ]);
+    }
+    if (
+      usuario?.id_rol === 3 &&
+      !linksShown.some((link) => link.props.path === "/dashboard/admin")
+    ) {
+      setLinksShown((prev) => [
+        ...prev,
+        <CustomLink
+          name="Administrar"
+          Icon={UserCog2}
+          path="/dashboard/admin"
+        />,
+      ]);
+    }
+  }, [archivoSalarial]);
   const currentUrl = location.pathname;
   return (
     <div className="dashboard-layout">
@@ -63,64 +153,21 @@ const DashboardLayout = () => {
           </section>
         </div>
         <nav className="links">
-          <ul className="links-list">
-            <li className="links-list-item">
-              <NavLink
-                className={({ isActive }) => (isActive ? "active-link" : "")}
-                to="/dashboard/home"
-              >
-                <Home />
-                <p>Inicio dashboard</p>
-              </NavLink>
-            </li>
-            <li className="links-list-item">
-              <NavLink
-                className={({ isActive }) => (isActive ? "active-link" : "")}
-                to="/dashboard/upload"
-              >
-                <UploadCloud />
-                <p>Subir archivo</p>
-              </NavLink>
-            </li>
-            <li className="links-list-item">
-              <NavLink
-                className={({ isActive }) => (isActive ? "active-link" : "")}
-                to="/dashboard/graphs"
-              >
-                <ChartBarStacked />
-                <p>Ver gráficas</p>
-              </NavLink>
-            </li>
-            <li className="links-list-item">
-              <NavLink
-                className={({ isActive }) => (isActive ? "active-link" : "")}
-                to="/dashboard/recommendations"
-              >
-                <Lightbulb />
-                <p>Recomendaciones</p>
-              </NavLink>
-            </li>
-            <li className="links-list-item">
-              <NavLink to="#" className="disabled-link">
-                <History />
-                <p>Historial (en desarrollo)</p>
-              </NavLink>
-            </li>
-            <li className="links-list-item">
-              <NavLink to="#" className="disabled-link">
-                <Settings2 />
-                <p>Configurar hiperparámetros (en desarrollo)</p>
-              </NavLink>
-            </li>
-            <li className="links-list-item">
-              <NavLink
-                className={({ isActive }) => (isActive ? "active-link" : "")}
-                to="/dashboard/admin"
-              >
-                <UserCog2 />
-                <p>Administrar</p>
-              </NavLink>
-            </li>
+          <ul
+            className="links-list"
+            style={{
+              height: linksShown.reduce((sum, linkShown) => {
+                return sum + (amountOfLines(linkShown) * 8.88 + 44);
+              }, 0),
+              width: 200,
+              transition: "height 0.3s ease",
+            }}
+          >
+            {linksShown.map((linkShown, idx) => (
+              <li key={idx} className="links-list-item">
+                {linkShown}
+              </li>
+            ))}
           </ul>
         </nav>
       </div>

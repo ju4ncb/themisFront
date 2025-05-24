@@ -12,7 +12,7 @@ const AboutUs: React.FC = () => (
       <section className="about-page__text">
         <p>
           Somos estudiantes de Ingeniería de Sistemas de la Universidad Simón
-          Bolívar, cursando el noveno semestre y desarrollando{" "}
+          Bolívar, cursando el séptimo semestre y desarrollando{" "}
           <strong>Themis</strong>, una plataforma beta que transforma datos CSV
           en ideas accionables mediante Machine Learning.
           <br />

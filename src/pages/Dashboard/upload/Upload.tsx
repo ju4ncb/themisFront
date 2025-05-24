@@ -96,6 +96,19 @@ const Upload = () => {
     reader.onload = (event) => {
       const csv = event.target?.result as string;
       const result = Papa.parse(csv, { header: true, skipEmptyLines: true });
+      // Remove columns with empty string or undefined as key
+      if (Array.isArray(result.data)) {
+        result.data = result.data.map((row: any) => {
+          if (typeof row === "object" && row !== null) {
+            Object.keys(row).forEach((key) => {
+              if (key === "" || key === undefined) {
+                delete row[key];
+              }
+            });
+          }
+          return row;
+        });
+      }
       // result.data es tu JSON
       setRegistrosJson(result.data); // Usa un useState para guardar el JSON
     };

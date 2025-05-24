@@ -2,10 +2,11 @@ interface Props {
   title: string;
   children: React.ReactNode;
   buttonText?: string;
+  onClick?: () => void;
   noBg?: boolean;
 }
 
-const CardButton = ({ title, children, buttonText, noBg }: Props) => {
+const CardButton = ({ title, children, buttonText, noBg, onClick }: Props) => {
   return (
     <div
       className={!noBg ? "container-cardbutton" : "container-cardbutton no-bg"}
@@ -14,7 +15,11 @@ const CardButton = ({ title, children, buttonText, noBg }: Props) => {
       <div className="texto-card">
         <p>{children}</p>
       </div>
-      {buttonText && <button className="boton-card">{buttonText}</button>}
+      {buttonText && (
+        <button className="boton-card" onClick={onClick}>
+          {buttonText}
+        </button>
+      )}
     </div>
   );
 };

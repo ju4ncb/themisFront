@@ -118,6 +118,12 @@ const Dashboard: React.FC = () => {
                 <CardButton
                   title="Buscar datasets"
                   buttonText="Entrar a kaggle"
+                  onClick={() => {
+                    window.open(
+                      "https://www.kaggle.com/search?q=dataset+salary",
+                      "_blank"
+                    );
+                  }}
                 >
                   <span className="card__name">Buscar datasets en Kaggle</span>
                 </CardButton>

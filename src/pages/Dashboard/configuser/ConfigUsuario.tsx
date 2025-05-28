@@ -13,8 +13,8 @@ type FormValues = {
   apellidos: string;
   direccion: string;
   telefono: string;
-  email: string;
-  password: string;
+  correo: string;
+  contrasena: string;
 };
 
 const ConfigUsuario: React.FC = () => {
@@ -33,8 +33,8 @@ const ConfigUsuario: React.FC = () => {
       apellidos: "",
       direccion: "",
       telefono: "",
-      email: "",
-      password: "",
+      correo: "",
+      contrasena: "",
     },
   });
 
@@ -46,7 +46,7 @@ const ConfigUsuario: React.FC = () => {
       setValue("apellidos", usuario.apellidos || "");
       setValue("direccion", usuario.direccion || "");
       setValue("telefono", usuario.telefono || "");
-      setValue("email", usuario.correo || "");
+      setValue("correo", usuario.correo || "");
       // No cargamos password real por seguridad
     }
   }, [usuario, setValue]);
@@ -59,8 +59,8 @@ const ConfigUsuario: React.FC = () => {
       apellidos: data.apellidos,
       direccion: data.direccion,
       telefono: data.telefono,
-      correo: data.email,
-      // password: data.password (si permites cambiarla)
+      correo: data.correo,
+      password: data.contrasena,
     };
     try {
       const response = await fetch(
@@ -107,20 +107,28 @@ const ConfigUsuario: React.FC = () => {
           {/* Email */}
           <div className="form-row single">
             <div className="form-field">
-              <label htmlFor="email">Correo</label>
+              <label htmlFor="correo">Correo (*)</label>
               <input
-                id="email"
                 type="email"
-                {...register("email", { required: true })}
+                id="correo"
+                {...register("correo", {
+                  required: "El correo es obligatorio",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Correo inválido",
+                  },
+                })}
               />
-              {errors.email && <span>Este campo es requerido</span>}
+              {typeof errors.correo?.message === "string" && (
+                <span>{errors.correo.message}</span>
+              )}
             </div>
           </div>
 
           {/* Nombres / Apellidos */}
           <div className="form-row">
             <div className="form-field">
-              <label htmlFor="nombres">Nombres</label>
+              <label htmlFor="nombres">Nombres (*)</label>
               <input
                 id="nombres"
                 type="text"
@@ -129,7 +137,7 @@ const ConfigUsuario: React.FC = () => {
               {errors.nombres && <span>Este campo es requerido</span>}
             </div>
             <div className="form-field">
-              <label htmlFor="apellidos">Apellidos</label>
+              <label htmlFor="apellidos">Apellidos (*)</label>
               <input
                 id="apellidos"
                 type="text"
@@ -142,7 +150,7 @@ const ConfigUsuario: React.FC = () => {
           {/* Dirección */}
           <div className="form-row single">
             <div className="form-field">
-              <label htmlFor="direccion">Dirección (opcional)</label>
+              <label htmlFor="direccion">Dirección</label>
               <input id="direccion" type="text" {...register("direccion")} />
             </div>
           </div>
@@ -150,7 +158,7 @@ const ConfigUsuario: React.FC = () => {
           {/* Teléfono */}
           <div className="form-row">
             <div className="form-field">
-              <label htmlFor="telefono">Teléfono (opcional)</label>
+              <label htmlFor="telefono">Teléfono</label>
               <input id="telefono" type="tel" {...register("telefono")} />
             </div>
           </div>
@@ -162,7 +170,7 @@ const ConfigUsuario: React.FC = () => {
           {/* Nombre de usuario */}
           <div className="form-row single">
             <div className="form-field">
-              <label htmlFor="nombreusuario">Nombre usuario</label>
+              <label htmlFor="nombreusuario">Nombre usuario (*)</label>
               <input
                 id="nombreusuario"
                 type="text"
@@ -178,9 +186,9 @@ const ConfigUsuario: React.FC = () => {
               <label htmlFor="password">Contraseña</label>
               <div className="password-input-wrapper">
                 <input
-                  id="password"
+                  id="contrasena"
                   type={showPwd ? "text" : "password"}
-                  {...register("password")}
+                  {...register("contrasena")}
                   placeholder="**********"
                 />
                 <button
@@ -192,6 +200,9 @@ const ConfigUsuario: React.FC = () => {
                   {showPwd ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              {typeof errors.contrasena?.message === "string" && (
+                <span>{errors.contrasena.message}</span>
+              )}
             </div>
           </div>
         </fieldset>

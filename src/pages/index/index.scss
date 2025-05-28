@@ -11,6 +11,37 @@
   img {
     height: 300px;
   }
+  .container-features {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    .container-feature {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 250px;
+      height: 350px;
+      svg {
+        height: 100px;
+        width: 100px;
+      }
+      h2 {
+        text-align: center;
+        font-size: 36px;
+        height: 50px;
+      }
+      .texto-feature {
+        height: 200px;
+        padding: 10px;
+        p {
+          margin-top: 0.75rem;
+          font-size: 14px;
+          text-align: justify;
+        }
+      }
+    }
+  }
   .container-cards {
     display: flex;
     flex-direction: row;

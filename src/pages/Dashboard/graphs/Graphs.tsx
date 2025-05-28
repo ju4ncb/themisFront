@@ -15,6 +15,7 @@ const graficasMap = {
 const Graphs: React.FC = () => {
   const { archivoSalarial } = useArchivoSalarial();
   const [tiposGraficas, setTiposGraficas] = useState<string[]>([]);
+
   const [variablesTotales, setVariablesTotales] = useState<string[]>([]);
   const [variablesAsignadas, setVariablesAsignadas] = useState<string[]>([]);
   const [variablesHorizontales, setVariablesHorizontales] = useState<string[]>(
@@ -114,12 +115,17 @@ const Graphs: React.FC = () => {
     if (graficoEscogido === "bar" || graficoEscogido === "box") {
       // Validar que la variable vertical sea numérica
       if (!isNumericVariable(variableVertical)) {
-        Swal.fire({
+        const result = await Swal.fire({
           icon: "warning",
           title: "Selección inválida",
-          text: "Para el gráfico de barra, la variable vertical debe ser numérica.",
+          text: "Para el gráfico de barra, la variable vertical debe ser numérica, ¿Desea forzarlo?",
+          showCancelButton: true,
+          confirmButtonText: "Forzar gráfico",
+          cancelButtonText: "Cancelar",
         });
-        return;
+        if (!result.isConfirmed) {
+          return;
+        }
       }
       if (
         variablesHorizontales.some((variable) => isNumericVariable(variable))

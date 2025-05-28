@@ -4,9 +4,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   height: 100%;
-  width: max-content;
+  width: 100%;
   padding: 65px 0;
   gap: 5px;
   align-items: center;
@@ -17,7 +16,7 @@
     left: 0;
     font-size: 32px;
   }
-  button {
+  button[type="submit"] {
     position: absolute;
     width: 160px;
     bottom: 0;

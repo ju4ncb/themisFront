@@ -19,6 +19,7 @@ import { useEffect, useState, type JSX } from "react";
 import NavbarDashboard from "../components/NavbarDashboard";
 import CustomLink from "../components/CustomLink";
 import { useArchivoSalarial } from "../contexts/ArchivoSalarialContext";
+import LoginNavBar from "../components/LoginNavBar";
 
 const DashboardLayout = () => {
   const [dropdownActive, setDropdownActive] = useState(false);
@@ -119,77 +120,82 @@ const DashboardLayout = () => {
   }, [archivoSalarial]);
   const currentUrl = location.pathname;
   return (
-    <div className="dashboard-layout">
-      <div className="sidebar-dashboard">
-        <a href="/">
-          <img src={logo} alt="Logo" />
-        </a>
-        <div className="user-card">
-          <section className="user-info">
-            <UserCircle2 />
-            <p>{usuario?.nombreusuario}</p>
-          </section>
-          <section className="user-menu-dropdown">
-            <button
-              className={dropdownActive ? "active" : "user-menu-trigger"}
-              onClick={() => setDropdownActive((prev) => !prev)}
+    <>
+      <LoginNavBar />
+      <div className="dashboard-layout">
+        <div className="sidebar-dashboard">
+          <a href="/">
+            <img src={logo} alt="Logo" />
+          </a>
+          <div className="user-card">
+            <section className="user-info">
+              <UserCircle2 />
+              <p>{usuario?.nombreusuario}</p>
+            </section>
+          </div>
+          <nav className="links">
+            <ul
+              className="links-list"
+              style={{
+                height:
+                  linksShown.reduce((sum, linkShown) => {
+                    return sum + (amountOfLines(linkShown) * 8.88 + 44);
+                  }, 0) + 100,
+                width: 200,
+                transition: "height 0.3s ease",
+              }}
             >
-              <Menu />
-            </button>
-            {dropdownActive && (
-              <ul className="user-menu-list">
-                <li>
-                  <UserCog />
-                  <Link to="/dashboard/configusuario">Configuración</Link>
+              {linksShown.map((linkShown, idx) => (
+                <li key={idx} className="links-list-item">
+                  {linkShown}
                 </li>
-                <li>
-                  <LogOut />
-                  <Link
-                    to="#"
-                    onClick={() => {
-                      setUsuario(null);
-                      window.location.assign("/");
-                    }}
-                  >
-                    Cerrar sesión
-                  </Link>
-                </li>
-              </ul>
-            )}
-          </section>
+              ))}
+              <section className="menu-dropdown">
+                <button
+                  className={dropdownActive ? "btn active" : "btn"}
+                  onClick={() => setDropdownActive((prev) => !prev)}
+                >
+                  <Menu />
+                  Ver más
+                </button>
+                {dropdownActive && (
+                  <ul className="menu-list">
+                    <li>
+                      <UserCog />
+                      <Link to="/dashboard/configusuario">Configuración</Link>
+                    </li>
+                    <li>
+                      <LogOut />
+                      <Link
+                        to="#"
+                        onClick={() => {
+                          setUsuario(null);
+                          window.location.assign("/");
+                        }}
+                      >
+                        Cerrar sesión
+                      </Link>
+                    </li>
+                  </ul>
+                )}
+              </section>
+            </ul>
+          </nav>
         </div>
-        <nav className="links">
-          <ul
-            className="links-list"
-            style={{
-              height: linksShown.reduce((sum, linkShown) => {
-                return sum + (amountOfLines(linkShown) * 8.88 + 44);
-              }, 0),
-              width: 200,
-              transition: "height 0.3s ease",
-            }}
-          >
-            {linksShown.map((linkShown, idx) => (
-              <li key={idx} className="links-list-item">
-                {linkShown}
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <main
+          className={
+            currentUrl !== "/dashboard/home"
+              ? "main-content with-nav"
+              : "main-content"
+          }
+        >
+          {currentUrl !== "/dashboard/home" && (
+            <NavbarDashboard currentUrl={currentUrl} />
+          )}
+          <Outlet />
+        </main>
       </div>
-      <main
-        className={
-          currentUrl !== "/dashboard/home"
-            ? "main-content with-nav"
-            : "main-content"
-        }
-      >
-        {currentUrl !== "/dashboard/home" && (
-          <NavbarDashboard currentUrl={currentUrl} />
-        )}
-        <Outlet />
-      </main>
-    </div>
+    </>
   );
 };
 

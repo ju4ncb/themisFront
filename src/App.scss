@@ -99,28 +99,27 @@ select:focus {
     min-height: 100vh;
     background-image: url("./assets/garabatos.png");
     background-size: 200px;
-    .login-navbar {
-      background: $color-bg-2;
-      border-bottom-left-radius: 25px;
-      width: 264px;
-      position: absolute;
-      padding: 0 10px 0 20px;
-      right: 0;
-      top: 0;
-      display: flex;
-      height: 44px;
-      justify-content: center;
-      align-items: center;
-      gap: 2rem;
-      transition: width 0.3s ease;
-      a,
-      p {
-        font-size: 12px;
-      }
-    }
-    .size-increase {
-      width: 414px;
-    }
+  }
+}
+
+.login-navbar {
+  background: $color-bg-2;
+  border-bottom-left-radius: 25px;
+  position: absolute;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 10px 0 20px;
+  right: 0;
+  top: 0;
+  display: flex;
+  height: 44px;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  transition: width 0.3s ease;
+  a,
+  p {
+    font-size: 12px;
   }
 }
 
@@ -136,14 +135,11 @@ select:focus {
     display: flex;
     flex-direction: column;
     background-color: $color-bg-3;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
-    top: 0;
-    left: 0;
+    padding-top: 1rem;
     width: $sidebar-width;
     height: 100vh;
-    transform: translateY(0);
-    border-radius: 0px;
     img {
       width: 130px;
       clip-path: circle();
@@ -181,58 +177,6 @@ select:focus {
         svg {
           width: 80px;
           height: 80px;
-        }
-      }
-      .user-menu-dropdown {
-        position: relative;
-        margin-top: 0.5rem;
-        place-items: center;
-        display: grid;
-        button {
-          width: 100px;
-          background: transparent;
-          transition: 0.3s background-color ease;
-          padding: 5px 5px 2px 5px;
-          svg {
-            transition: 0.3s transform ease;
-          }
-        }
-        button:hover,
-        .active {
-          background: $color-dropdown-highlight;
-          svg {
-            transform: scale(1.1);
-          }
-        }
-        .user-menu-list {
-          position: absolute;
-          backdrop-filter: blur(10px);
-          top: 40px;
-          z-index: 10;
-          display: flex;
-          border-radius: 5px;
-          overflow: hidden;
-          padding: 0;
-          flex-direction: column;
-          align-items: center;
-          list-style: none;
-          li {
-            gap: 1rem;
-            display: flex;
-            background: $color-dropdown;
-            transition: 0.3s background-color ease;
-            padding: 8px;
-            &:has(a:hover) {
-              background: $color-dropdown-highlight;
-            }
-            svg {
-              height: 16px;
-              width: 16px;
-            }
-            a {
-              font-size: 12px;
-            }
-          }
         }
       }
     }
@@ -295,6 +239,62 @@ select:focus {
           }
         }
       }
+      .menu-dropdown {
+        width: 100%;
+        position: relative;
+        margin-top: 0.5rem;
+        place-items: center;
+        display: grid;
+        .btn {
+          width: 110px;
+          display: flex;
+          gap: 5px;
+          align-items: center;
+          background: transparent;
+          transition: 0.3s background-color ease;
+          padding: 10px 5px 10px 5px;
+          svg {
+            transition: 0.3s transform ease;
+          }
+        }
+        .btn:hover,
+        .active {
+          background: $color-dropdown-highlight;
+          svg {
+            transform: scale(1.1);
+          }
+        }
+        .menu-list {
+          position: absolute;
+          backdrop-filter: blur(10px);
+          top: -70px;
+          z-index: 10;
+          display: flex;
+          border-radius: 5px;
+          overflow: hidden;
+          padding: 0;
+          flex-direction: column-reverse;
+          align-items: center;
+          list-style: none;
+          li {
+            gap: 1rem;
+            display: flex;
+            background: $color-dropdown;
+            transition: 0.3s background-color ease;
+            padding: 8px;
+            &:has(a:hover) {
+              background: $color-dropdown-highlight;
+            }
+            svg {
+              height: 16px;
+              width: 16px;
+            }
+            a {
+              font-size: 12px;
+            }
+          }
+        }
+      }
     }
   }
   .main-content {
@@ -347,11 +347,28 @@ select:focus {
   width: 100%;
 }
 
+.volver-auth {
+  display: flex;
+  padding: 10px;
+  gap: 5px;
+  align-items: center;
+  position: absolute;
+  border-bottom-right-radius: 5px;
+  top: 0;
+  left: 0;
+  text-decoration: underline;
+  transition: background-color 0.3s ease;
+  &:hover {
+    cursor: pointer;
+    background: $color-bg-2;
+  }
+}
+
 .auth-layout {
   display: flex;
   flex-direction: row;
   width: min(1000px, 80%);
-  height: 680px;
+  min-height: 680px;
   background: $color-contrast-3;
   color: $color-bg-3;
   .auth-content {
@@ -509,6 +526,20 @@ table {
 }
 
 .table-buttons {
-  margin-top: 1rem;
-  padding-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  padding: 1rem;
+  button {
+    background-color: $color-contrast-4;
+    transition: filter 0.3s ease;
+    &:hover {
+      filter: brightness(120%);
+    }
+  }
+}
+
+.seventy-percent {
+  min-width: 70% !important;
 }

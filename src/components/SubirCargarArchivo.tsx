@@ -2,6 +2,9 @@ import React from "react";
 import type { ArchivoSalarial } from "../models/ArchivoSalarial";
 import { useUsuario } from "../contexts/UsuarioContext";
 import { useArchivoSalarial } from "../contexts/ArchivoSalarialContext";
+import Swal from "sweetalert2";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface Props {
   archivosSalariales: ArchivoSalarial[];
@@ -23,6 +26,37 @@ const SubirCargarArchivo: React.FC<Props> = ({
       setNavBarActive(false);
     }
   };
+  const eliminarArchivo = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/archivossalariales/${archivoSalarial?.id_archivo}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "Eliminación exitosa",
+          text: `Archivo eliminado con éxito.`,
+        }).then(() => {
+          if (!archivoSalarial) return;
+          setArchivoSalarial(null);
+        });
+      } else {
+        // Handle error
+        throw Error();
+      }
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Hubo un error inesperado eliminando el archivo.",
+      });
+    }
+  };
+
   return (
     <div className="dashboard__subir-cargar-archivo">
       <h1 className="dashboard__subir-cargar-archivo__title">
@@ -53,20 +87,29 @@ const SubirCargarArchivo: React.FC<Props> = ({
             </option>
           ))}
         </select>
-        {archivoSalarial === null ? (
-          <button onClick={() => window.location.assign("/dashboard/upload")}>
-            Subir csv
-          </button>
-        ) : (
-          <>
-            <button onClick={() => window.location.assign("/dashboard/graphs")}>
-              Explorar datos
+        <div className="buttons-container">
+          {archivoSalarial === null ? (
+            <button onClick={() => window.location.assign("/dashboard/upload")}>
+              Subir csv
             </button>
-            <button onClick={() => window.location.assign("/dashboard/train")}>
-              Entrenar modelo
-            </button>
-          </>
-        )}
+          ) : (
+            <>
+              <button
+                onClick={() => window.location.assign("/dashboard/graphs")}
+              >
+                Explorar datos
+              </button>
+              <button
+                onClick={() => window.location.assign("/dashboard/train")}
+              >
+                Entrenar modelo
+              </button>
+              <button onClick={eliminarArchivo} className="eliminar">
+                Eliminar archivo
+              </button>
+            </>
+          )}
+        </div>
       </section>
     </div>
   );

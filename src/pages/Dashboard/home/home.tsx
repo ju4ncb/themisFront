@@ -94,12 +94,11 @@ const Dashboard: React.FC = () => {
   };
   return (
     <div className={navBarActive ? "dashboard with-navbar" : "dashboard"}>
-      {navBarActive && (
-        <NavbarDashboardHome
-          isDetalles={isDetalles}
-          setIsDetalles={setIsDetalles}
-        />
-      )}
+      <NavbarDashboardHome
+        navBarActive={navBarActive}
+        isDetalles={isDetalles}
+        setIsDetalles={setIsDetalles}
+      />
       {isDetalles ? (
         <main className="dashboard__content">
           <SubirCargarArchivo

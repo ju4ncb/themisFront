@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "./pages/index";
-import About from "./pages/about/About";
 import Contact from "./pages/contact/Contact";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
@@ -29,7 +28,6 @@ const App: React.FC = () => (
       {/* Rutas públicas */}
       <Route element={<HomeLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="about" element={<About />} />
         <Route path="about-us" element={<AboutUs />} />
         <Route path="contact" element={<Contact />} />
       </Route>

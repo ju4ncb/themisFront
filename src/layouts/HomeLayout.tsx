@@ -1,11 +1,11 @@
 import { Outlet, Link, NavLink } from "react-router-dom";
 import logo from "../assets/themis-logo-2-white.png";
-import { useUsuario } from "../contexts/UsuarioContext";
+import LoginNavBar from "../components/LoginNavBar";
 
 const HomeLayout = () => {
-  const { usuario, estaAutenticado, setUsuario } = useUsuario();
   return (
     <>
+      <LoginNavBar />
       <nav className="sidebar">
         <Link to="/" className="sidebar-logo">
           <img src={logo} alt="logo" />
@@ -18,7 +18,7 @@ const HomeLayout = () => {
             Home
           </NavLink>
           <NavLink
-            to="/about"
+            to="/about-us"
             className={({ isActive }) => (isActive ? "active-link" : "")}
           >
             About
@@ -29,36 +29,10 @@ const HomeLayout = () => {
           >
             Contact
           </NavLink>
-          <NavLink
-            to="/about-us"
-            className={({ isActive }) => (isActive ? "active-link" : "")}
-          >
-            About Us
-          </NavLink>
         </ul>
       </nav>
       <div className="home-layout">
         <main className="content-container">
-          <nav
-            className={
-              estaAutenticado ? "login-navbar size-increase" : "login-navbar"
-            }
-          >
-            {estaAutenticado ? (
-              <>
-                <p>Bienvenido, {usuario?.nombres}</p>
-                <Link to="/dashboard">Dashboard</Link>
-                <Link to="#" onClick={() => setUsuario(null)}>
-                  Cerrar sesión
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link to="/register">Registro</Link>
-                <Link to="/login">Inicio de sesión</Link>
-              </>
-            )}
-          </nav>
           <Outlet />
         </main>
       </div>

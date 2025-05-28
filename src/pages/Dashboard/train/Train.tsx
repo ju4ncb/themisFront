@@ -6,6 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const Train = () => {
   const { archivoSalarial } = useArchivoSalarial();
+  const [forceClassifier, setForceClassifier] = useState(false);
   const [botonesAsignados, setBotonesAsignados] = useState<string[]>([]);
   const [botonSeleccionado, setBotonSeleccionado] = useState("");
   const [variablesEntrada, setVariablesEntrada] = useState<string[]>([]);
@@ -15,7 +16,10 @@ const Train = () => {
   const [tiposVariables, setTiposVariables] = useState<Record<string, string>>(
     {}
   );
-  const [modelos, setModelos] = useState<string[]>([]);
+  const [modelos, setModelos] = useState<{
+    regression?: string[];
+    classifier?: string[];
+  }>({});
   const [modeloEscogido, setModeloEscogido] = useState("");
   const [imgBase64Overfitting, setImgBase64Overfitting] = useState<string>("");
   const [imgBase64Fairness, setImgBase64Fairness] = useState<string>("");
@@ -23,7 +27,7 @@ const Train = () => {
     fetch(`${API_URL}/ai/modelos`)
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
+        if (data) {
           setModelos(data);
         }
       })
@@ -52,17 +56,39 @@ const Train = () => {
       // ignore parse errors
     }
   }
+  useEffect(() => {
+    if (!archivoSalarial?.contenido?.[0]?.fila_registro) return;
+
+    const allVariables = Object.keys(
+      JSON.parse(archivoSalarial.contenido[0].fila_registro)
+    );
+
+    const usedVariables = new Set([
+      variableSalida,
+      variableSensible,
+      ...variablesEntrada,
+    ]);
+
+    const noUsadas = allVariables.filter((v) => usedVariables.has(v));
+
+    setBotonesAsignados(noUsadas);
+  }, [variableSalida, variableSensible, variablesEntrada]);
   const asignarBoton = (instruccion: string) => {
     if (!botonSeleccionado) return;
 
     if (instruccion === "entrada") {
-      if (
-        !variablesEntrada.includes(botonSeleccionado) &&
-        botonSeleccionado !== variableSalida &&
-        botonSeleccionado !== variableSensible
-      ) {
+      if (!variablesEntrada.includes(botonSeleccionado)) {
+        if (botonSeleccionado === variableSalida) {
+          setErrorLog(
+            `Variable ${botonSeleccionado} ya es de tipo salida, deseleccionala primero.`
+          );
+          setTimeout(() => setErrorLog(""), 7000);
+          return;
+        } else if (botonSeleccionado === variableSensible) {
+          setVariableSensible("");
+          return;
+        }
         setVariablesEntrada([...variablesEntrada, botonSeleccionado]);
-        setBotonesAsignados([...botonesAsignados, botonSeleccionado]);
         setBotonSeleccionado("");
       }
     } else if (instruccion === "sensible") {
@@ -76,27 +102,28 @@ const Train = () => {
         }
         setVariableSensible(botonSeleccionado);
         setBotonSeleccionado("");
+      } else {
+        setErrorLog(
+          `Variable ${botonSeleccionado} ya es de tipo salida, deseleccionala primero.`
+        );
+        setTimeout(() => setErrorLog(""), 7000);
+        return;
       }
     } else if (instruccion === "salida") {
-      if (
-        botonSeleccionado !== variableSensible &&
-        !variablesEntrada.includes(botonSeleccionado)
-      ) {
-        // Remove previous variableSalida from botonesAsignados if exists
-        let nuevosBotonesAsignados = botonesAsignados;
-        if (variableSalida) {
-          nuevosBotonesAsignados = nuevosBotonesAsignados.filter(
-            (b) => b !== variableSalida
+      if (botonSeleccionado !== variableSensible) {
+        if (variablesEntrada.includes(botonSeleccionado)) {
+          setErrorLog(
+            `Variable ${botonSeleccionado} ya es de tipo entrada o sensible, deseleccionala primero.`
           );
+          setTimeout(() => setErrorLog(""), 7000);
+          return;
         }
-        nuevosBotonesAsignados = [...nuevosBotonesAsignados, botonSeleccionado];
         setVariableSalida(botonSeleccionado);
-        setBotonesAsignados([...botonesAsignados, botonSeleccionado]);
         setBotonSeleccionado("");
       }
     }
   };
-  const entrenar = () => {
+  const entrenar = async () => {
     if (!archivoSalarial?.id_archivo) {
       setTimeout(() => setErrorLog(""), 7000);
       setErrorLog("No hay archivo cargado.");
@@ -111,6 +138,19 @@ const Train = () => {
       setErrorLog("Debe seleccionar un modelo.");
       setTimeout(() => setErrorLog(""), 7000);
       return;
+    }
+    if (forceClassifier) {
+      const result = await Swal.fire({
+        icon: "warning",
+        title: "Advertencia",
+        text: "No se recomienda forzar la clasificación en variables de salida numéricas continuas. ¿Desea continuar de todas formas?",
+        showCancelButton: true,
+        confirmButtonText: "Generar de todas formas",
+        cancelButtonText: "Cancelar",
+      });
+      if (!result.isConfirmed) {
+        return;
+      }
     }
 
     const body = {
@@ -141,17 +181,24 @@ const Train = () => {
           icon: "success",
           width: 600,
         });
+
         if (resultados?.overfitting_plot) {
           setImgBase64Overfitting(resultados.overfitting_plot);
+          // Scroll to the results section
+          const resultsDiv = document.getElementById("results");
+          if (resultsDiv) {
+            resultsDiv.scrollIntoView({ behavior: "smooth" });
+          }
         }
         if (resultados?.fairness_plot) {
           setImgBase64Fairness(resultados.fairness_plot);
         }
       })
       .catch((error) => {
+        console.log(error.errorMssg);
         Swal.fire({
           title: "Error al ejecutar el modelo",
-          text: error.errorMssg.error || error.error || "Error desconocido",
+          text: error.errorMssg || error.error || "Error desconocido",
           icon: "error",
         });
       });
@@ -223,24 +270,13 @@ const Train = () => {
                 className="btn"
                 onClick={() => {
                   if (!botonSeleccionado) return;
-                  let nuevosBotonesAsignados = botonesAsignados;
                   if (botonSeleccionado === variableSensible) {
-                    console.log("why");
-                    nuevosBotonesAsignados = nuevosBotonesAsignados.filter(
-                      (b) => b !== botonSeleccionado
-                    );
                     setVariableSensible("");
                   } else if (botonSeleccionado === variableSalida) {
-                    nuevosBotonesAsignados = nuevosBotonesAsignados.filter(
-                      (b) => b !== botonSeleccionado
-                    );
                     setVariableSalida("");
                   } else if (variablesEntrada.includes(botonSeleccionado)) {
                     let nuevasVariablesEntrada = variablesEntrada;
                     nuevasVariablesEntrada = nuevasVariablesEntrada.filter(
-                      (b) => b !== botonSeleccionado
-                    );
-                    nuevosBotonesAsignados = nuevosBotonesAsignados.filter(
                       (b) => b !== botonSeleccionado
                     );
                     setVariablesEntrada(nuevasVariablesEntrada);
@@ -248,7 +284,6 @@ const Train = () => {
                   setVariablesEntrada((prev) =>
                     prev.filter((v) => v !== botonSeleccionado)
                   );
-                  setBotonesAsignados(nuevosBotonesAsignados);
                   setBotonSeleccionado("");
                 }}
               >
@@ -284,6 +319,30 @@ const Train = () => {
                 </div>
               )}
             </div>
+            <div className="modelo-info">
+              <div className="tipo-modelo">
+                <strong>Tipo de modelo:</strong>
+                <span>
+                  {variableSalida !== ""
+                    ? tiposVariables[variableSalida] === "categórico" ||
+                      forceClassifier
+                      ? "Clasificador"
+                      : "Regresión"
+                    : "N/A"}
+                </span>
+              </div>
+              <div className="forzar-clasificador">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={forceClassifier}
+                    onChange={() => setForceClassifier((prev) => !prev)}
+                  />
+                  <span className="custom-checkbox" />
+                  Forzar clasificador
+                </label>
+              </div>
+            </div>
             <div className="modelo-selector">
               <label htmlFor="modelo-select">
                 <strong>Modelo:</strong>
@@ -294,12 +353,29 @@ const Train = () => {
                 onChange={(e) => setModeloEscogido(e.target.value)}
                 className="combo-modelos"
               >
-                <option value="">-- Seleccione un modelo --</option>
-                {modelos.map((modelo) => (
-                  <option key={modelo} value={modelo}>
-                    {modelo}
-                  </option>
-                ))}
+                {variableSalida !== "" ? (
+                  <option value="">-- Seleccione un modelo --</option>
+                ) : (
+                  <option value="">-- Seleccione una salida --</option>
+                )}
+                {variableSalida !== "" ? (
+                  tiposVariables[variableSalida] === "categórico" ||
+                  forceClassifier ? (
+                    modelos.classifier?.map((modelo) => (
+                      <option key={modelo} value={modelo}>
+                        {modelo}
+                      </option>
+                    ))
+                  ) : (
+                    modelos.regression?.map((modelo) => (
+                      <option key={modelo} value={modelo}>
+                        {modelo}
+                      </option>
+                    ))
+                  )
+                ) : (
+                  <></>
+                )}
               </select>
             </div>
             <button className="btn-1" onClick={entrenar}>
@@ -308,13 +384,24 @@ const Train = () => {
           </div>
         </div>
         {imgBase64Overfitting && (
-          <div className="train-img">
+          <div className="train-img" id="results">
             <div className="img-container">
-              <h3>Test overfiting</h3>
+              <h3>Test overfitting</h3>
               <img
                 src={`data:image/png;base64,${imgBase64Overfitting}`}
                 alt="Resultado del modelo"
               />
+              <button
+                className="btn-1"
+                onClick={() => {
+                  const link = document.createElement("a");
+                  link.href = `data:image/png;base64,${imgBase64Overfitting}`;
+                  link.download = "grafico.png";
+                  link.click();
+                }}
+              >
+                Descargar PNG
+              </button>
             </div>
             {imgBase64Fairness && (
               <div className="img-container">
@@ -323,6 +410,17 @@ const Train = () => {
                   src={`data:image/png;base64,${imgBase64Fairness}`}
                   alt="Equidad del modelo"
                 />
+                <button
+                  className="btn-1"
+                  onClick={() => {
+                    const link = document.createElement("a");
+                    link.href = `data:image/png;base64,${imgBase64Fairness}`;
+                    link.download = "grafico.png";
+                    link.click();
+                  }}
+                >
+                  Descargar PNG
+                </button>
               </div>
             )}
           </div>

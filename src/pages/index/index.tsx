@@ -1,9 +1,19 @@
-import { BrainCircuit, UserPlus2, Users2 } from "lucide-react";
+import {
+  BarChart4,
+  BrainCircuit,
+  ChartBarStacked,
+  Scale,
+  UploadCloud,
+  UserPlus2,
+  Users2,
+} from "lucide-react";
 import Card from "../../components/Card";
 import defaultImg from "../../assets/default-icon.svg";
 import logo from "../../assets/themis-logo-white.png";
 import "./index.scss";
 import { useEffect, useState } from "react";
+import Feature from "../../components/Feature";
+import { useUsuario } from "../../contexts/UsuarioContext";
 const API_URL = import.meta.env.VITE_API_URL;
 
 interface CardsInfo {
@@ -18,6 +28,7 @@ const Home = () => {
     usuariosTotales: 0,
     usuariosNuevosSemana: 0,
   };
+  const { usuario } = useUsuario();
   const [cardsInfo, setCardsInfo] = useState(cardsInfoDummy as CardsInfo);
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +56,30 @@ const Home = () => {
   return (
     <div className="home-container">
       <img src={logo} alt="themis-logo" />
+      <div className="container-features">
+        <Feature Icon={UploadCloud} title="Carga">
+          Puedes subir tus propios archivos (por ejemplo, en formato CSV) con
+          datos para crear modelos.
+        </Feature>
+        <Feature Icon={BrainCircuit} title="Entrena">
+          Themis entrena modelos por ti. Solo debes elegir qué variable quieres
+          predecir (por ejemplo, ingresos, edad, riesgo, etc.) y qué
+          características vas a usar (como género, edad, ubicación...).
+        </Feature>
+        <Feature Icon={BarChart4} title="Analiza">
+          Después del entrenamiento, puedes ver qué tan bien funciona tu modelo
+          (precisión, error, etc.).
+        </Feature>
+        <Feature Icon={Scale} title="Evalúa">
+          Una de las funciones más importantes de Themis: puedes ver si tu
+          modelo es justo con diferentes grupos de personas (por ejemplo, si
+          trata igual a hombres y mujeres, o a diferentes edades).
+        </Feature>
+        <Feature Icon={ChartBarStacked} title="Compara">
+          Puedes comparar varios modelos para decidir cuál es el más justo y el
+          más preciso.
+        </Feature>
+      </div>
       <div className="container-cards">
         <Card Icon={BrainCircuit} number={cardsInfo.modelosTotales}>
           Modelos de IA desarrollados en total
@@ -56,13 +91,27 @@ const Home = () => {
           Usuarios nuevos esta semana
         </Card>
       </div>
-      <h1>Únete con nosotros</h1>
-      <button
-        type="button"
-        onClick={() => (window.location.href = "/register")}
-      >
-        Registrarse
-      </button>
+      {usuario !== null ? (
+        <>
+          <h1>Empieza a entrenar</h1>
+          <button
+            type="button"
+            onClick={() => (window.location.href = "/dashboard")}
+          >
+            Ir al dashboard
+          </button>
+        </>
+      ) : (
+        <>
+          <h1>Únete con nosotros</h1>
+          <button
+            type="button"
+            onClick={() => (window.location.href = "/register")}
+          >
+            Registrarse
+          </button>
+        </>
+      )}
       <div className="analizador-container">
         <div className="analizador-texto-container">
           <h1>Analizador de datasets intuitivo</h1>

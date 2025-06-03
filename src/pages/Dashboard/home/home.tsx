@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NavbarDashboardHome from "../../../components/NavbarDashboardHome";
 import SubirCargarArchivo from "../../../components/SubirCargarArchivo";
-import CardButton from "../../../components/CardButton";
+import Card from "../../../components/Card";
 import "./home.scss";
 import { useArchivoSalarial } from "../../../contexts/ArchivoSalarialContext";
 import type { ArchivoSalarial } from "../../../models/ArchivoSalarial";
@@ -108,13 +108,13 @@ const Dashboard: React.FC = () => {
           <div className="dashboard__cards">
             {archivoSalarial === null ? (
               <>
-                <CardButton title="Último dataset usado" buttonText="Usar este">
+                <Card title="Último dataset usado" buttonText="Usar este">
                   <span className="card__name">&lt;Nombre-archivo&gt;</span>{" "}
                   <span className="card__attr">&lt;fecha&gt;</span>{" "}
                   <span className="card__attr">&lt;tamaño&gt;</span>
-                </CardButton>
+                </Card>
 
-                <CardButton
+                <Card
                   title="Buscar datasets"
                   buttonText="Entrar a kaggle"
                   onClick={() => {
@@ -125,22 +125,22 @@ const Dashboard: React.FC = () => {
                   }}
                 >
                   <span className="card__name">Buscar datasets en Kaggle</span>
-                </CardButton>
+                </Card>
               </>
             ) : (
               <>
-                <CardButton title="Número de filas">
+                <Card title="Número de filas">
                   <span className="card_number">{numFilas}</span>
-                </CardButton>
-                <CardButton title="Número de columnas">
+                </Card>
+                <Card title="Número de columnas">
                   <span className="card_number">{numColumnas}</span>
-                </CardButton>
-                <CardButton title="Tamaño">
+                </Card>
+                <Card title="Tamaño">
                   <span className="card_number">
                     {(archivoSalarial.tamano / 1024).toFixed(2)} kB
                   </span>
-                </CardButton>
-                <CardButton title="Fecha creado">
+                </Card>
+                <Card title="Fecha creado">
                   <span className="card_number">
                     {(() => {
                       const date = new Date(archivoSalarial.created_at);
@@ -165,7 +165,7 @@ const Dashboard: React.FC = () => {
                       )}:${minutes}:${seconds} ${ampm}`;
                     })()}
                   </span>
-                </CardButton>
+                </Card>
               </>
             )}
           </div>

@@ -7,7 +7,7 @@ import {
   UserPlus2,
   Users2,
 } from "lucide-react";
-import Card from "../../components/Card";
+import CardNumber from "../../components/CardNumber";
 import defaultImg from "../../assets/default-icon.svg";
 import logo from "../../assets/themis-logo-white.png";
 import "./index.scss";
@@ -81,15 +81,15 @@ const Home = () => {
         </Feature>
       </div>
       <div className="container-cards">
-        <Card Icon={BrainCircuit} number={cardsInfo.modelosTotales}>
+        <CardNumber Icon={BrainCircuit} number={cardsInfo.modelosTotales}>
           Modelos de IA desarrollados en total
-        </Card>
-        <Card Icon={Users2} number={cardsInfo.usuariosTotales}>
+        </CardNumber>
+        <CardNumber Icon={Users2} number={cardsInfo.usuariosTotales}>
           Usuarios totales
-        </Card>
-        <Card Icon={UserPlus2} number={cardsInfo.usuariosNuevosSemana}>
+        </CardNumber>
+        <CardNumber Icon={UserPlus2} number={cardsInfo.usuariosNuevosSemana}>
           Usuarios nuevos esta semana
-        </Card>
+        </CardNumber>
       </div>
       {usuario !== null ? (
         <>

@@ -2,188 +2,172 @@
 
 @import "../../../colors.scss";
 
-/* Layout grid for the graphs section */
-.graphs-content-new {
-  display: grid;
-  grid-template-areas:
-    "form cards"
-    "chart chart";
-  grid-template-columns: 2fr 1fr;
-  height: 100%;
-  width: 100%;
-  gap: 1.5rem;
-  padding: 2rem;
+.grid-col {
+  grid-template-columns: 50% 50%;
+}
+.grid-row {
+  grid-template-rows: 50% 50%;
+}
+.center-start {
+  place-self: center start;
 }
 
-/* Form panel (left side) */
-.form-panel-new {
-  grid-area: form;
-  max-width: 700px;
-  background: $color-bg-5;
-  border: 1px solid $color-bg-2;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  color: $color-text;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  .form-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: $color-contrast-3;
+.graphs-page {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  .analysis-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
   }
-
-  .field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-
-    label {
-      font-size: 0.9rem;
-      color: $color-contrast;
-    }
-
-    select {
-      padding: 0.5rem;
-      background: $color-bg-4;
-      color: $color-text;
+  .graphs-form {
+    display: grid;
+    place-self: center end;
+    height: max-content;
+    width: max-content;
+    padding: 2rem;
+    .form-panel-new {
+      grid-area: form;
+      max-width: 700px;
+      background: $color-bg-5;
       border: 1px solid $color-bg-2;
-      border-radius: 0.25rem;
-    }
-
-    .selected-vars {
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      color: $color-text;
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.25rem;
+      flex-direction: column;
+      gap: 1rem;
 
-      .selected-var {
+      .form-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: $color-contrast-3;
+      }
+
+      .field-group {
         display: flex;
-        align-items: center;
-        background: $color-bg-4;
-        color: $color-text;
-        border: 1px solid $color-bg-2;
-        border-radius: 0.25rem;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.85rem;
+        flex-direction: column;
         gap: 0.25rem;
 
-        .btn-remove-var {
-          background: none;
-          border: none;
-          color: $color-contrast-4;
-          font-size: 1rem;
-          cursor: pointer;
-          padding: 0 0.25rem;
-          line-height: 1;
-          border-radius: 50%;
+        label {
+          font-size: 0.9rem;
+          color: $color-contrast;
+        }
 
-          &:hover {
-            background: $color-bg-2;
-            color: $color-contrast-6;
+        select {
+          padding: 0.5rem;
+          background: $color-bg-4;
+          color: $color-text;
+          border: 1px solid $color-bg-2;
+          border-radius: 0.25rem;
+        }
+
+        .selected-vars {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+          margin-top: 0.25rem;
+
+          .selected-var {
+            display: flex;
+            align-items: center;
+            background: $color-bg-4;
+            color: $color-text;
+            border: 1px solid $color-bg-2;
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.85rem;
+            gap: 0.25rem;
+
+            .btn-remove-var {
+              background: none;
+              border: none;
+              color: $color-contrast-4;
+              font-size: 1rem;
+              cursor: pointer;
+              padding: 0 0.25rem;
+              line-height: 1;
+              border-radius: 50%;
+
+              &:hover {
+                background: $color-bg-2;
+                color: $color-contrast-6;
+              }
+            }
           }
+        }
+      }
+
+      .generate-btn-new {
+        align-self: flex-start;
+        padding: 0.5rem 1rem;
+        background: $color-contrast-4;
+        color: $color-text;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background: $color-contrast-6;
         }
       }
     }
   }
-
-  .generate-btn-new {
-    align-self: flex-start;
-    padding: 0.5rem 1rem;
-    background: $color-contrast-4;
-    color: $color-text;
-    border: none;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background: $color-contrast-6;
+  .graphs-cards-result {
+    display: grid;
+    grid-template-rows: 128px auto;
+    height: max-content;
+    width: max-content;
+    .cards-panel {
+      display: flex;
     }
-  }
-}
+    .chart-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
 
-/* Cards panel (right side) */
-.cards-panel {
-  grid-area: cards;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
+      .chart-placeholder {
+        width: 100%;
+        height: 450px;
+        background: $color-bg-4;
+        border: 1px dashed $color-bg-2;
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-.card-small {
-  background: $color-bg-5;
-  border: 1px solid $color-bg-2;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: $color-text;
+        svg {
+          color: $color-contrast-2;
+        }
 
-  .card-icon {
-    color: $color-contrast-4;
-  }
-
-  .card-content {
-    h2 {
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-      color: $color-contrast-3;
-    }
-    p {
-      margin: 0.25rem 0;
-      font-size: 0.875rem;
-      strong {
-        color: $color-contrast-2;
+        img {
+          height: 95%;
+        }
       }
-    }
-  }
-}
 
-/* Chart panel (bottom) */
-.chart-panel {
-  grid-area: chart;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1rem;
+      .download-btn-new {
+        padding: 0.5rem 1rem;
+        background: $color-contrast-4;
+        color: $color-text;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background-color 0.2s;
 
-  .chart-placeholder {
-    width: 100%;
-    height: 450px;
-    background: $color-bg-4;
-    border: 1px dashed $color-bg-2;
-    border-radius: 0.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    svg {
-      color: $color-contrast-2;
-    }
-    img {
-      height: 95%;
-    }
-  }
-
-  .download-btn-new {
-    padding: 0.5rem 1rem;
-    background: $color-contrast-4;
-    color: $color-text;
-    border: none;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background: $color-contrast-6;
+        &:hover {
+          background: $color-contrast-6;
+        }
+      }
     }
   }
 }

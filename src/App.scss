@@ -453,33 +453,6 @@ select:focus {
   background: none !important;
 }
 
-.container-cardbutton {
-  background: $color-bg-3;
-  border-radius: 0.5rem;
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  .texto-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    .card__name {
-      font-weight: 500;
-      font-size: 1.05rem;
-    }
-
-    .card__attr {
-      font-size: 0.875rem;
-      color: $color-contrast-3;
-    }
-  }
-  .boton-card {
-    margin-top: 20px;
-    width: 160px;
-  }
-}
-
 table {
   width: calc(100% - 4rem);
   margin: 1rem;
@@ -520,6 +493,68 @@ table {
       &:hover {
         transform: scale(1.1);
         filter: invert(0);
+      }
+    }
+  }
+}
+
+.container-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 340px;
+  min-height: 150px;
+  max-height: none;
+  background: $color-bg-3;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  position: relative;
+  .texto-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    .card__name {
+      font-weight: 500;
+      font-size: 1.05rem;
+    }
+    .card__attr {
+      font-size: 0.875rem;
+      color: $color-contrast-3;
+    }
+  }
+  .boton-card {
+    margin-top: 20px;
+    width: 160px;
+  }
+}
+
+.card-small {
+  background: $color-bg-5;
+  border: 1px solid $color-bg-2;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: $color-text;
+
+  .card-icon {
+    color: $color-contrast-4;
+  }
+
+  .card-content {
+    h2 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: $color-contrast-3;
+    }
+
+    p {
+      margin: 0.25rem 0;
+      font-size: 0.875rem;
+
+      strong {
+        color: $color-contrast-2;
       }
     }
   }

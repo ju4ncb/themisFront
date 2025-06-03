@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CardButton from "../../../components/CardButton";
+import Card from "../../../components/Card";
 import "./upload.scss";
 import { UploadIcon } from "lucide-react";
 import Papa from "papaparse";
@@ -117,11 +117,11 @@ const Upload = () => {
   return (
     <div className="upload-container">
       <div className="upload-text-card">
-        <CardButton title="Subir documento" noBg={true}>
+        <Card title="Subir documento" noBg={true}>
           <span className="card__name">
             Arrastra tu archivo aquí o haz clic para seleccionarlo
           </span>
-        </CardButton>
+        </Card>
       </div>
       <div
         className="upload-dropzone"

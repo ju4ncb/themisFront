@@ -21,6 +21,9 @@ import AuthLayout from "./layouts/AuthLayout";
 import { RequiereAcceso, RequiereNoAcceso } from "./components/RutasProtegidas";
 import { ArchivoSalarialProvider } from "./contexts/ArchivoSalarialContext";
 import Train from "./pages/Dashboard/train/Train";
+import Bivariable from "./pages/Dashboard/graphs/bivariable/Bivariable";
+import { GraphProvider } from "./contexts/GraphContext";
+import GraphLayout from "./layouts/GraphLayout";
 
 const App: React.FC = () => (
   <UsuarioProvider>
@@ -58,7 +61,17 @@ const App: React.FC = () => (
         <Route path="configusuario" element={<ConfigUsuario />} />
         <Route path="upload" element={<Upload />} />
         <Route path="train" element={<Train />} />
-        <Route path="graphs" element={<Graphs />} />
+        <Route
+          path="graphs"
+          element={
+            <GraphProvider>
+              <GraphLayout />
+            </GraphProvider>
+          }
+        >
+          <Route index element={<Graphs />} />
+          <Route path="bivariable" element={<Bivariable />} />
+        </Route>
         <Route path="configparams" element={<ConfigParams />} />
         <Route path="recommendations" element={<Recommendations />} />
         <Route path="admin" element={<Admin />} />

@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const graficasMap = {
-  scatter: "Gráfico de dispersión",
+  reg: "Gráfico de regresión",
   hist: "Histograma",
   box: "Gráfico de cajas y bigotes",
   bar: "Gráfico de barra",
@@ -73,7 +73,7 @@ const Graphs: React.FC = () => {
       return value !== "" && !isNaN(Number(value));
     };
 
-    if (graficoEscogido === "scatter") {
+    if (graficoEscogido === "reg") {
       if (variablesHorizontales.length !== 1) {
         Swal.fire({
           icon: "warning",

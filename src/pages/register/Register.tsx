@@ -38,7 +38,7 @@ const Register = () => {
           text: `Usuario registrado con éxito.`,
         }).then(() => {
           setUsuario(usuarioNuevo as Usuario);
-          window.location.assign("/");
+          window.location.assign("/dashboard");
         });
       } else {
         throw Error();

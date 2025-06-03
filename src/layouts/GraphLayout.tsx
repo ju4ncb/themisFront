@@ -75,7 +75,9 @@ const GraphLayout: React.FC = () => {
       {/* Tarjetas y gráfico */}
       <div
         className={
-          isHome ? "graphs-cards-result" : "graphs-cards-result center-start"
+          isHome
+            ? "graphs-cards-result start-center"
+            : "graphs-cards-result center-start"
         }
       >
         <div className="cards-panel">

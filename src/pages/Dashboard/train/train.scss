@@ -176,10 +176,28 @@
             }
           }
         }
-        .btn {
-          background-color: $color-bg-2;
-          &:hover {
-            background-color: $color-bg-4;
+        .options {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          gap: 0.5rem;
+          .btn {
+            background-color: $color-bg-2;
+            &:hover {
+              background-color: $color-bg-4;
+            }
+          }
+          .red {
+            background-color: #e74c3c;
+            &:hover {
+              background-color: #b33f32;
+            }
+          }
+          .green {
+            background-color: #1ed760;
+            &:hover {
+              background-color: #33b962;
+            }
           }
         }
       }
@@ -390,10 +408,9 @@
       }
     }
     @media (min-width: 900px) {
-      flex-direction: row;
       justify-content: center;
       .img-container {
-        width: 500px;
+        width: 90%;
       }
     }
   }

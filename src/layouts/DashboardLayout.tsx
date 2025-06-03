@@ -2,7 +2,10 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import logo from "../assets/themis-logo-2-white.png";
 import {
   BrainCircuit,
+  ChartBar,
   ChartBarStacked,
+  ChartScatter,
+  Grid,
   History,
   Home,
   Lightbulb,
@@ -20,6 +23,7 @@ import NavbarDashboard from "../components/NavbarDashboard";
 import CustomLink from "../components/CustomLink";
 import { useArchivoSalarial } from "../contexts/ArchivoSalarialContext";
 import LoginNavBar from "../components/LoginNavBar";
+import CustomLinkWithChildren from "../components/CustomLinkWithChildren";
 
 const DashboardLayout = () => {
   const [dropdownActive, setDropdownActive] = useState(false);
@@ -62,10 +66,27 @@ const DashboardLayout = () => {
     if (archivoSalarial !== null && linksShown.length <= 3)
       setLinksShown((prev) => [
         ...prev,
-        <CustomLink
+        <CustomLinkWithChildren
           name="Explorar datos"
-          Icon={ChartBarStacked}
           path="/dashboard/graphs"
+          Icon={ChartBarStacked}
+          children={[
+            {
+              name: "Univariable",
+              path: "/dashboard/graphs/univariable",
+              Icon: ChartBar,
+            },
+            {
+              name: "Bivariable",
+              path: "/dashboard/graphs/bivariable",
+              Icon: ChartScatter,
+            },
+            {
+              name: "Multivariable",
+              path: "/dashboard/graphs/multivariable",
+              Icon: Grid,
+            },
+          ]}
         />,
         <CustomLink
           name="Entrenar modelo"
@@ -139,6 +160,16 @@ const DashboardLayout = () => {
               style={{
                 height:
                   linksShown.reduce((sum, linkShown) => {
+                    if (linkShown.props.children) {
+                      const isActiveChild = (
+                        linkShown.props.children as { path: string }[]
+                      ).some((child) => location.pathname === child.path);
+                      const isActiveParent =
+                        location.pathname === linkShown.props.path;
+                      if (isActiveChild || isActiveParent) {
+                        sum += linkShown.props.children.length * 28;
+                      }
+                    }
                     return sum + (amountOfLines(linkShown) * 8.88 + 44);
                   }, 0) + 100,
                 width: 200,

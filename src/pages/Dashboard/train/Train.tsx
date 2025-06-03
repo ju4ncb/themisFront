@@ -7,7 +7,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 const Train = () => {
   const { archivoSalarial } = useArchivoSalarial();
   const [forceClassifier, setForceClassifier] = useState(false);
-  const [botonesAsignados, setBotonesAsignados] = useState<string[]>([]);
+  const [botonesNoDisponibles, setBotonesNoDisponibles] = useState<string[]>(
+    []
+  );
   const [botonSeleccionado, setBotonSeleccionado] = useState("");
   const [variablesEntrada, setVariablesEntrada] = useState<string[]>([]);
   const [variableSalida, setVariableSalida] = useState("");
@@ -69,9 +71,9 @@ const Train = () => {
       ...variablesEntrada,
     ]);
 
-    const noUsadas = allVariables.filter((v) => usedVariables.has(v));
+    const noDisponibles = allVariables.filter((v) => usedVariables.has(v));
 
-    setBotonesAsignados(noUsadas);
+    setBotonesNoDisponibles(noDisponibles);
   }, [variableSalida, variableSensible, variablesEntrada]);
   const asignarBoton = (instruccion: string) => {
     if (!botonSeleccionado) return;
@@ -186,17 +188,13 @@ const Train = () => {
       .then((resultados) => {
         Swal.fire({
           title: "Modelo entrenado con éxito",
+          text: "Baja a ver los resultados.",
           icon: "success",
           width: 600,
         });
 
         if (resultados?.overfitting_plot) {
           setImgBase64Overfitting(resultados.overfitting_plot);
-          // Scroll to the results section
-          const resultsDiv = document.getElementById("results");
-          if (resultsDiv) {
-            resultsDiv.scrollIntoView({ behavior: "smooth" });
-          }
         }
         if (resultados?.fairness_plot) {
           setImgBase64Fairness(resultados.fairness_plot);
@@ -258,7 +256,7 @@ const Train = () => {
                   ).map((key) => (
                     <button
                       className={
-                        botonesAsignados.includes(key)
+                        botonesNoDisponibles.includes(key)
                           ? "btn-2 disabled"
                           : "btn-2"
                       }
@@ -274,29 +272,52 @@ const Train = () => {
                   <p>No hay variables disponibles.</p>
                 )}
               </div>
-              <button
-                className="btn"
-                onClick={() => {
-                  if (!botonSeleccionado) return;
-                  if (botonSeleccionado === variableSensible) {
-                    setVariableSensible("");
-                  } else if (botonSeleccionado === variableSalida) {
-                    setVariableSalida("");
-                  } else if (variablesEntrada.includes(botonSeleccionado)) {
-                    let nuevasVariablesEntrada = variablesEntrada;
-                    nuevasVariablesEntrada = nuevasVariablesEntrada.filter(
-                      (b) => b !== botonSeleccionado
+              <div className="options">
+                <button
+                  className="btn red"
+                  onClick={() => {
+                    if (!botonSeleccionado) return;
+                    if (botonSeleccionado === variableSensible) {
+                      setVariableSensible("");
+                    } else if (botonSeleccionado === variableSalida) {
+                      setVariableSalida("");
+                    } else if (variablesEntrada.includes(botonSeleccionado)) {
+                      let nuevasVariablesEntrada = variablesEntrada;
+                      nuevasVariablesEntrada = nuevasVariablesEntrada.filter(
+                        (b) => b !== botonSeleccionado
+                      );
+                      setVariablesEntrada(nuevasVariablesEntrada);
+                    }
+                    setVariablesEntrada((prev) =>
+                      prev.filter((v) => v !== botonSeleccionado)
                     );
-                    setVariablesEntrada(nuevasVariablesEntrada);
-                  }
-                  setVariablesEntrada((prev) =>
-                    prev.filter((v) => v !== botonSeleccionado)
-                  );
-                  setBotonSeleccionado("");
-                }}
-              >
-                Desasignar variable
-              </button>
+                    setBotonSeleccionado("");
+                  }}
+                >
+                  Desasignar variable
+                </button>
+                <button
+                  className="btn green"
+                  onClick={() => {
+                    if (!archivoSalarial?.contenido?.[0]?.fila_registro) return;
+
+                    const allVariables = Object.keys(
+                      JSON.parse(archivoSalarial.contenido[0].fila_registro)
+                    );
+
+                    const usedVariables = new Set([
+                      variableSalida,
+                      variableSensible,
+                      ...variablesEntrada,
+                    ]);
+                    setVariablesEntrada(
+                      allVariables.filter((v) => !usedVariables.has(v))
+                    );
+                  }}
+                >
+                  Rellenar a variables de entrada
+                </button>
+              </div>
             </div>
           </div>
           <div className="resumen">

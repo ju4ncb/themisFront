@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useArchivoSalarial } from "../../../../contexts/ArchivoSalarialContext";
 import Swal from "sweetalert2";
 import { useGraphVariables } from "../../../../contexts/GraphContext";
+import { useForm } from "react-hook-form";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const graficasMap = {
@@ -11,15 +12,21 @@ const graficasMap = {
   bar: "Gráfico de barra",
 };
 
+type FormValues = {
+  graphType: string;
+  x: string;
+  y: string;
+  hue?: string;
+};
+
 const Bivariable: React.FC = () => {
   const { variablesTotales, setImgBase64 } = useGraphVariables();
   const { archivoSalarial } = useArchivoSalarial();
-  const [variablesAsignadas, setVariablesAsignadas] = useState<string[]>([]);
   const [tiposGraficas, setTiposGraficas] = useState<string[]>([]);
-  const [variableHorizontal, setVariableHorizontal] = useState<string>("");
-  const [variableVertical, setVariableVertical] = useState("");
-  const [variableDiferenciadora, setVariableDiferenciadora] = useState("");
-  const [graficoEscogido, setGraficoEscogido] = useState("");
+  const [formError, setFormError] = useState("");
+  const { register, handleSubmit, watch } = useForm<FormValues>();
+
+  const watchGraphType = watch("graphType");
 
   useEffect(() => {
     fetch(`${API_URL}/ai/graphs`)
@@ -35,90 +42,78 @@ const Bivariable: React.FC = () => {
       });
   }, []);
 
-  const handleGenerateGraph = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (!graficoEscogido || !variableHorizontal || !variableVertical) {
-      Swal.fire({
-        icon: "warning",
-        title: "Faltan campos",
-        text: "Por favor seleccione el tipo de gráfico, al menos una variable horizontal y una variable vertical.",
-      });
+  const countUniqueValues = (variable: string): number => {
+    if (!archivoSalarial?.contenido?.length) return 0;
+
+    const unique = new Set(
+      archivoSalarial.contenido.map((row) => {
+        const parsed = JSON.parse(row.fila_registro);
+        return parsed[variable];
+      })
+    );
+
+    return unique.size;
+  };
+
+  const isNumericVariable = (variable: string): boolean => {
+    if (!archivoSalarial?.contenido?.length) return false;
+
+    const values = archivoSalarial.contenido.map((r) =>
+      Number(JSON.parse(r.fila_registro)[variable])
+    );
+
+    const validValues = values.filter((v) => !isNaN(v));
+    return validValues.length === values.length;
+  };
+
+  const filterVars = (isNumericOnly: boolean) =>
+    variablesTotales.filter((v) =>
+      isNumericOnly ? isNumericVariable(v) : true
+    );
+
+  const numericVariables = variablesTotales.filter((variable) => {
+    if (!archivoSalarial?.contenido?.length) return false;
+    const fila = JSON.parse(archivoSalarial.contenido[0].fila_registro);
+    const value = fila[variable];
+    return value !== "" && !isNaN(Number(value));
+  });
+
+  const disableNumericOnlyGraphs = numericVariables.length < 2;
+
+  const onSubmit = async (data: FormValues) => {
+    setFormError("");
+    const { graphType, x, y, hue } = data;
+
+    if (!graphType || !x || !y) {
+      let error = "Por favor seleccione ";
+      let errorFields = [];
+      if (!graphType) errorFields.push("el tipo de gráfico");
+      if (!x) errorFields.push("X");
+      if (!y) errorFields.push("Y");
+
+      setFormError(error + errorFields.join(", ") + ".");
       return;
     }
 
-    // Función auxiliar para validar si una variable es numérica
-    const isNumericVariable = (variable: string) => {
-      if (!archivoSalarial?.contenido?.length) return false;
-      const fila = JSON.parse(archivoSalarial.contenido[0].fila_registro);
-      const value = fila[variable];
-      return value !== "" && !isNaN(Number(value));
-    };
+    const xIsNum = isNumericVariable(x);
+    const yIsNum = isNumericVariable(y);
 
-    if (graficoEscogido === "reg") {
-      if (!variableHorizontal) {
-        Swal.fire({
-          icon: "warning",
-          title: "Selección inválida",
-          text: "Para el gráfico de regresión, seleccione solo una variable horizontal.",
-        });
-        return;
-      }
-      // Validar que ambas sean numéricas
-      if (
-        !isNumericVariable(variableHorizontal) ||
-        !isNumericVariable(variableVertical)
-      ) {
-        Swal.fire({
-          icon: "warning",
-          title: "Selección inválida",
-          text: "Para el gráfico de regresión, ambas variables deben ser numéricas.",
-        });
-        return;
-      }
+    if ((graphType === "reg" || graphType === "hist") && (!xIsNum || !yIsNum)) {
+      setFormError("Las variables X e Y deben ser numéricas.");
+      return;
     }
 
-    if (graficoEscogido === "hist") {
-      // Validar que todas las variables horizontales y la vertical sean numéricas
-      if (
-        !isNumericVariable(variableHorizontal) ||
-        !isNumericVariable(variableVertical)
-      ) {
-        Swal.fire({
+    if ((graphType === "bar" || graphType === "box") && xIsNum && yIsNum) {
+      const xUnique = countUniqueValues(x);
+      const yUnique = countUniqueValues(y);
+
+      if (xUnique > 15 || yUnique > 15) {
+        await Swal.fire({
           icon: "warning",
-          title: "Selección inválida",
-          text: "Para el histograma, todas las variables horizontales y la variable vertical deben ser numéricas.",
+          title: "Demasiadas categorías",
+          text: "Hay muchas categorías para este tipo de gráfico. Considere usar regresión o histograma.",
         });
         return;
-      }
-    }
-
-    if (graficoEscogido === "bar" || graficoEscogido === "box") {
-      // Validar que la variable vertical sea numérica
-      if (!isNumericVariable(variableVertical)) {
-        const result = await Swal.fire({
-          icon: "warning",
-          title: "Selección inválida",
-          text: "Para el gráfico de barra, la variable vertical debe ser numérica, ¿Desea forzarlo?",
-          showCancelButton: true,
-          confirmButtonText: "Forzar gráfico",
-          cancelButtonText: "Cancelar",
-        });
-        if (!result.isConfirmed) {
-          return;
-        }
-      }
-      if (isNumericVariable(variableHorizontal)) {
-        const result = await Swal.fire({
-          icon: "warning",
-          title: "Advertencia",
-          text: "No se recomienda usar variables numéricas como variables horizontales para este tipo de gráfico. ¿Desea continuar de todas formas?",
-          showCancelButton: true,
-          confirmButtonText: "Generar de todas formas",
-          cancelButtonText: "Cancelar",
-        });
-        if (!result.isConfirmed) {
-          return;
-        }
       }
     }
 
@@ -134,239 +129,99 @@ const Bivariable: React.FC = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          x: variableHorizontal,
-          y: variableVertical,
-          hue: variableDiferenciadora || undefined,
-          graphType: graficoEscogido,
+          graphType,
+          x,
+          y,
+          hue: hue || undefined,
           id_archivo: archivoSalarial?.id_archivo,
         }),
       });
-      if (!response.ok) throw new Error("Error al generar el gráfico");
-      const data = await response.json();
-      if (data?.image) {
-        setImgBase64(data.image);
-        Swal.close();
+
+      const result = await response.json();
+      if (result.image) {
+        setImgBase64(result.image);
       } else {
-        throw new Error("No se recibió la imagen");
+        setFormError("No se recibió imagen del servidor.");
       }
     } catch (err: any) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: err.message || "No se pudo generar el gráfico.",
-      });
+      setFormError(err.message || "No se pudo generar el gráfico.");
     }
+    Swal.close();
   };
   return (
     <main className="graphs-form">
-      {/* Formulario grande a la izquierda */}
       <section className="form-panel-new">
         <h1 className="form-title">Generar análisis bivariable</h1>
 
-        <div className="field-group">
-          <label>Tipo de gráfico</label>
-          <select
-            value={graficoEscogido}
-            onChange={(e) => setGraficoEscogido(e.target.value)}
-          >
-            <option value={""}>Seleccione un tipo de gráfico</option>
-            {tiposGraficas.map((value) => (
-              <option key={value} value={value}>
-                {graficasMap[value as keyof typeof graficasMap]}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="field-group">
-          <label>Variable horizontal</label>
-          <select
-            value=""
-            onChange={(e) => {
-              const selected = e.target.value;
-              if (selected && variableHorizontal !== selected) {
-                setVariableHorizontal(selected);
-                setVariablesAsignadas([...variablesAsignadas, selected]);
-              }
-            }}
-          >
-            <option value="">Seleccione una variable</option>
-            {variablesTotales
-              .filter((variable) => !variablesAsignadas.includes(variable))
-              .map((variable) => (
-                <option key={variable} value={variable}>
-                  {variable} (
-                  {(() => {
-                    if (!archivoSalarial?.contenido?.length) return "";
-                    const fila = JSON.parse(
-                      archivoSalarial.contenido[0].fila_registro
-                    );
-                    const value = fila[variable];
-                    const num = Number(value);
-                    if (value === "" || isNaN(num)) return "categórica";
-                    return "numérica";
-                  })()}
-                  )
+        <form onSubmit={handleSubmit(onSubmit)} className="form-container">
+          <div className="field-group">
+            <label>Tipo de gráfico</label>
+            <select {...register("graphType")}>
+              <option value="">Seleccione un tipo de gráfico</option>
+              {tiposGraficas.map((type) => (
+                <option
+                  key={type}
+                  value={type}
+                  disabled={
+                    disableNumericOnlyGraphs &&
+                    (type === "reg" || type === "hist")
+                  }
+                >
+                  {graficasMap[type as keyof typeof graficasMap]}
                 </option>
               ))}
-          </select>
-          <div className="selected-vars">
-            {variableHorizontal && (
-              <div className="selected-var">
-                {variableHorizontal}
-                <button
-                  type="button"
-                  className="btn-remove-var"
-                  onClick={() => {
-                    setVariablesAsignadas(
-                      variablesAsignadas.filter((v) => v !== variableHorizontal)
-                    );
-                    setVariableHorizontal("");
-                  }}
-                >
-                  ×
-                </button>
-              </div>
-            )}
+            </select>
           </div>
-        </div>
 
-        <div className="field-group">
-          <label>Variable vertical</label>
-          <select
-            value={variableVertical}
-            onChange={(e) => {
-              const selected = e.target.value;
-              // Remove previous variableVertical from variablesAsignadas
-              setVariablesAsignadas((prev) => {
-                const removedPrev = prev.filter((v) => v !== variableVertical);
-                // Add new selection if not empty and not already present
-                if (selected && !removedPrev.includes(selected)) {
-                  return [...removedPrev, selected];
-                }
-                return removedPrev;
-              });
-              setVariableVertical(selected);
-            }}
-          >
-            <option value="">Seleccione una variable</option>
-            {variablesTotales
-              .filter(
-                (variable) =>
-                  !variablesAsignadas.includes(variable) ||
-                  variable === variableVertical
-              )
-              .map((variable) => (
+          <div className="field-group">
+            <label>Variable horizontal (X)</label>
+            <select {...register("x")}>
+              <option value="">Seleccione una variable</option>
+              {filterVars(
+                watchGraphType === "reg" || watchGraphType === "hist"
+              ).map((variable) => (
                 <option key={variable} value={variable}>
                   {variable} (
-                  {(() => {
-                    if (!archivoSalarial?.contenido?.length) return "";
-                    const fila = JSON.parse(
-                      archivoSalarial.contenido[0].fila_registro
-                    );
-                    const value = fila[variable];
-                    const num = Number(value);
-                    if (value === "" || isNaN(num)) return "categórica";
-                    return "numérica";
-                  })()}
-                  )
+                  {isNumericVariable(variable) ? "numérica" : "categórica"})
                 </option>
               ))}
-          </select>
-          <div className="selected-vars">
-            {variableVertical && (
-              <div className="selected-var">
-                {variableVertical}
-                <button
-                  type="button"
-                  className="btn-remove-var"
-                  onClick={() => {
-                    setVariablesAsignadas(
-                      variablesAsignadas.filter((v) => v !== variableVertical)
-                    );
-                    setVariableVertical("");
-                  }}
-                >
-                  ×
-                </button>
-              </div>
-            )}
+            </select>
           </div>
-        </div>
 
-        <div className="field-group">
-          <label>Variable diferenciadora (Opcional)</label>
-          <select
-            value={variableDiferenciadora}
-            onChange={(e) => {
-              const selected = e.target.value;
-              // Remove previous variableDiferenciadora from variablesAsignadas
-              setVariablesAsignadas((prev) => {
-                const removedPrev = prev.filter(
-                  (v) => v !== variableDiferenciadora
-                );
-                // Add new selection if not empty and not already present
-                if (selected && !removedPrev.includes(selected)) {
-                  return [...removedPrev, selected];
-                }
-                return removedPrev;
-              });
-              setVariableDiferenciadora(selected);
-            }}
-          >
-            <option value="">Seleccione una variable</option>
-            {variablesTotales
-              .filter(
-                (variable) =>
-                  !variablesAsignadas.includes(variable) ||
-                  variable === variableDiferenciadora
-              )
-              .map((variable) => (
+          <div className="field-group">
+            <label>Variable vertical (Y)</label>
+            <select {...register("y")}>
+              <option value="">Seleccione una variable</option>
+              {filterVars(
+                watchGraphType === "reg" || watchGraphType === "hist"
+              ).map((variable) => (
                 <option key={variable} value={variable}>
                   {variable} (
-                  {(() => {
-                    if (!archivoSalarial?.contenido?.length) return "";
-                    const fila = JSON.parse(
-                      archivoSalarial.contenido[0].fila_registro
-                    );
-                    const value = fila[variable];
-                    const num = Number(value);
-                    if (value === "" || isNaN(num)) return "categórica";
-                    return "numérica";
-                  })()}
-                  )
+                  {isNumericVariable(variable) ? "numérica" : "categórica"})
                 </option>
               ))}
-          </select>
-          <div className="selected-vars">
-            {variableDiferenciadora && (
-              <div className="selected-var">
-                {variableDiferenciadora}
-                <button
-                  type="button"
-                  className="btn-remove-var"
-                  onClick={() => {
-                    setVariablesAsignadas(
-                      variablesAsignadas.filter(
-                        (v) => v !== variableDiferenciadora
-                      )
-                    );
-                    setVariableDiferenciadora("");
-                  }}
-                >
-                  ×
-                </button>
-              </div>
-            )}
+            </select>
           </div>
-        </div>
 
-        <button
-          className="btn btn--primary generate-btn-new"
-          onClick={(e) => handleGenerateGraph(e)}
-        >
-          Generar gráfico
-        </button>
+          <div className="field-group">
+            <label>Variable diferenciadora (Opcional)</label>
+            <select {...register("hue")}>
+              <option value="">Seleccione una variable</option>
+              {variablesTotales.map((variable) => (
+                <option key={variable} value={variable}>
+                  {variable} (
+                  {isNumericVariable(variable) ? "numérica" : "categórica"})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {formError && <span className="error-text">{formError}</span>}
+
+          <button className="btn btn--primary generate-btn-new" type="submit">
+            Generar gráfico
+          </button>
+        </form>
       </section>
     </main>
   );

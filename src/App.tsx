@@ -10,7 +10,7 @@ import AboutUs from "./pages/about-us/AboutUs";
 import Dashboard from "./pages/Dashboard/home/home";
 import ConfigUsuario from "./pages/Dashboard/configuser/ConfigUsuario";
 import Upload from "./pages/Dashboard/upload/Upload";
-import Graphs from "./pages/Dashboard/graphs/Graphs";
+import Graphs from "./pages/Dashboard/graphs/index/Graphs";
 import ConfigParams from "./pages/Dashboard/configparams/ConfigParams";
 import Recommendations from "./pages/Dashboard/recommendations/Recommendations";
 import Admin from "./pages/Dashboard/admin/Admin";
@@ -24,6 +24,8 @@ import Train from "./pages/Dashboard/train/Train";
 import Bivariable from "./pages/Dashboard/graphs/bivariable/Bivariable";
 import { GraphProvider } from "./contexts/GraphContext";
 import GraphLayout from "./layouts/GraphLayout";
+import Univariable from "./pages/Dashboard/graphs/univariable/Univariable";
+import Multivariable from "./pages/Dashboard/graphs/multivariable/Multivariable";
 
 const App: React.FC = () => (
   <UsuarioProvider>
@@ -71,6 +73,8 @@ const App: React.FC = () => (
         >
           <Route index element={<Graphs />} />
           <Route path="bivariable" element={<Bivariable />} />
+          <Route path="univariable" element={<Univariable />} />
+          <Route path="multivariable" element={<Multivariable />} />
         </Route>
         <Route path="configparams" element={<ConfigParams />} />
         <Route path="recommendations" element={<Recommendations />} />

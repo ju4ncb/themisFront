@@ -237,6 +237,53 @@ select:focus {
               }
             }
           }
+          .custom-link-with-children {
+            width: 100%;
+            .parent-link {
+              background: none;
+              border: none;
+              cursor: pointer;
+              display: flex;
+              width: 100%;
+              padding: 0.75rem 10px;
+              gap: 1rem;
+              align-items: center;
+              svg {
+                width: 20px;
+                height: 20px;
+              }
+              p {
+                text-align: start;
+                font-size: 12px;
+                color: $color-text;
+                width: calc(100% - 20px);
+              }
+              &:hover {
+                p,
+                svg {
+                  color: $color-contrast-2;
+                }
+              }
+            }
+            .sublinks {
+              list-style: none;
+              padding-left: 2rem;
+              li {
+                width: 100%;
+                a {
+                  display: flex !important;
+                  font-size: 11px;
+                  display: block;
+                  padding: 4px 0;
+                  color: $color-text;
+                  text-decoration: none;
+                  &:hover {
+                    color: $color-contrast-2;
+                  }
+                }
+              }
+            }
+          }
         }
       }
       .menu-dropdown {
@@ -525,6 +572,45 @@ table {
   .boton-card {
     margin-top: 20px;
     width: 160px;
+  }
+  .nav-link {
+    position: relative;
+    place-self: center;
+    border-radius: 8px;
+    overflow: hidden;
+    width: max-content;
+    margin-top: 1rem;
+    background-color: #00000052;
+    border: $color-contrast-3 3px solid;
+    color: $color-contrast-3;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease, border-color 0.3s ease;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 100%;
+      background-color: $color-contrast-3;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    &:hover {
+      color: $color-contrast-6;
+      border-color: $color-contrast-6;
+    }
+
+    &:hover::after {
+      transform: scaleX(1);
+      background-color: $color-contrast-6;
+    }
   }
 }
 

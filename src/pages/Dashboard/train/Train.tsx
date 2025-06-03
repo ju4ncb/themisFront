@@ -154,12 +154,20 @@ const Train = () => {
     }
 
     const body = {
-      fileId: archivoSalarial.id_archivo,
+      id_archivo: archivoSalarial.id_archivo,
       modelType: modeloEscogido, // o el tipo que corresponda
       target: variableSalida,
       features: variablesEntrada,
       sensitiveFeature: variableSensible || undefined,
     };
+
+    Swal.fire({
+      title: "Generando gráfico...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     fetch(`${API_URL}/ai`, {
       method: "POST",

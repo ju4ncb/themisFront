@@ -39,7 +39,13 @@ const LoginNavBar = () => {
             ) : (
               <Link to="/dashboard">Dashboard</Link>
             )}
-            <Link to="#" onClick={() => setUsuario(null)}>
+            <Link
+              to="#"
+              onClick={() => {
+                setUsuario(null);
+                window.location.assign("/");
+              }}
+            >
               Cerrar sesión
             </Link>
           </>

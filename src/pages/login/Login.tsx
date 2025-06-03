@@ -28,7 +28,7 @@ const Login = () => {
           text: `Se ha iniciado sesión con éxito.`,
         }).then(() => {
           setUsuario(usuarioNuevo as Usuario);
-          window.location.assign("/");
+          window.location.assign("/register");
         });
       } else {
         Swal.fire({

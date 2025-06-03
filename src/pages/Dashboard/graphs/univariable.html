@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generar análisis univariable</title>
+  <link rel="stylesheet" href="estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Margarine&family=Martian+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Generar análisis univariable</h1>
+  </header>
+
+  <main class="dashboard">
+    <section class="controles">
+  <div class="bloque-controles">
+    <label for="tipoGrafico">Tipo de gráfico</label>
+    <select id="tipoGrafico">
+      <option value="">Seleccionar</option>
+    </select>
+
+    <label for="variable">Variable</label>
+    <select id="variable">
+      <option value="">Seleccionar</option>
+    </select>
+
+    <button id="generarGrafico">Generar gráfico</button>
+  </div>
+</section>
+
+    <section class="panel-superior">
+      <div class="dataset-info">
+        <h3> Dataset actual</h3>
+        <p class="archivo"> kairos.csv</p>
+      </div>
+
+      <div class="resumen">
+        <h3>Resumen</h3>
+        <p>Valores nulos: 0</p>
+        <p>Numéricas: 4</p>
+        <p>Categóricas: 2</p>
+      </div>
+    </section>
+
+    <section class="grafico-area">
+      <div class="grafico-placeholder">
+      </div>
+      <button id="descargarPNG">Descargar PNG</button>
+    </section>
+  </main>
+</body>
+</html>

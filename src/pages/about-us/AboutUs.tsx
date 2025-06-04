@@ -4,34 +4,34 @@ import collage2 from "../../assets/collage-fjkj.png";
 import "./AboutUs.scss";
 
 const AboutUs: React.FC = () => (
-  <div className="about-page">
-    <h1 className="about-page__title">Sobre nosotros</h1>
-
-    <div className="about-page__grid">
-      {/* Texto */}
-      <section className="about-page__text">
+  <div className="about-section">
+    <h1 className="title">Sobre nosotros</h1>
+   <div className="about-container">
+      <div className="block">
+        <h2>Introducción a Themis</h2>
+        <h3>¿Quiénes somos?</h3>
         <p>
-          Somos estudiantes de Ingeniería de Sistemas de la Universidad Simón
-          Bolívar, cursando el séptimo semestre y desarrollando{" "}
-          <strong>Themis</strong>, una plataforma beta que transforma datos CSV
-          en ideas accionables mediante Machine Learning.
-          <br />
-          <br />
-          Nuestro objetivo es empoderar a la comunidad con información precisa,
-          convertir cada conjunto de datos en historias reveladoras y abrir
-          nuevas posibilidades de innovación.
+          Somos estudiantes de Ingeniería de Sistemas de la Universidad Simón Bolívar, actualmente en séptimo semestre.
+          Estamos desarrollando Themis, una plataforma beta que transforma datos CSV en ideas accionables usando Machine Learning.
         </p>
-      </section>
-
-      {/* Collages */}
-      <aside className="about-page__collages">
-        <div className="collage-wrapper">
-          <img src={collage1} alt="Collage equipo parte 1" />
-        </div>
-        <div className="collage-wrapper">
-          <img src={collage2} alt="Collage equipo parte 2" />
-        </div>
-      </aside>
+        <br />
+        <p>
+          Nuestro propósito es empoderar a la comunidad con información clara, convertir datos en historias reveladoras y abrir nuevas puertas a la innovación.
+        </p>
+      </div>
+      <div className="block">
+        <h2>Nuestro ODS</h2>
+        <h3>Compromiso con el ODS 8 </h3>
+        <p>
+          Themis promueve el crecimiento económico inclusivo al proporcionar a las organizaciones una herramienta accesible
+          para analizar datos salariales y detectar desigualdades. Al facilitar la creación de modelos de inteligencia artificial 
+          para identificar brechas salariales, ayudamos a las empresas a tomar decisiones más justas y transparentes.
+        </p>
+        <br />
+        <p>
+          Nuestra plataforma busca fomentar entornos laborales más equitativos, donde la igualdad de oportunidades y el salario justo sean una realidad.
+        </p>
+      </div>
     </div>
   </div>
 );

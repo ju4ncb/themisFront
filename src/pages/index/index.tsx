@@ -8,7 +8,7 @@ import {
   Users2,
 } from "lucide-react";
 import CardNumber from "../../components/CardNumber";
-import defaultImg from "../../assets/default-icon.svg";
+import analizadora from "../../assets/analizadora.png";
 import logo from "../../assets/themis-logo-white.png";
 import "./index.scss";
 import { useEffect, useState } from "react";
@@ -122,7 +122,7 @@ const Home = () => {
           </p>
         </div>
         <div className="analizador-carousel-container">
-          <img src={defaultImg} />
+          <img src={analizadora} />
         </div>
       </div>
       <h1>¿Cómo funciona nuestra IA?</h1>

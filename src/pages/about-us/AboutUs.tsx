@@ -64,7 +64,7 @@ const AboutUs: React.FC = () => (
           <img src={member3} alt="Francisco Sosa" />
           <div className="info">
             <a  className="name">Francisco Sosa</a>
-            <span>FRON TEAM</span>
+            <span>FRONT TEAM</span>
           </div>
         </div>
 

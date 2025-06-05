@@ -14,18 +14,21 @@ const HomeLayout = () => {
           <NavLink
             to="/"
             className={({ isActive }) => (isActive ? "active-link" : "")}
+            onClick={() => window.scrollTo(0, 0)}
           >
             Home
           </NavLink>
           <NavLink
             to="/about-us"
             className={({ isActive }) => (isActive ? "active-link" : "")}
+            onClick={() => window.scrollTo(0, 0)}
           >
             About
           </NavLink>
           <NavLink
             to="/contact"
             className={({ isActive }) => (isActive ? "active-link" : "")}
+            onClick={() => window.scrollTo(0, 0)}
           >
             Contact
           </NavLink>

@@ -96,7 +96,8 @@ const DashboardLayout = () => {
         <CustomLink
           name="Recomendaciones"
           Icon={Lightbulb}
-          path="/dashboard/recommendations"
+          path="#"
+          isDisabled={true}
         />,
         <CustomLink
           name="Configurar hiperparámetros"

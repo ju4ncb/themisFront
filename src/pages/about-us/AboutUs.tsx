@@ -5,7 +5,7 @@ import member3 from "../../assets/francisco.jpg";
 import member4 from "../../assets/david.jpg";
 import member5 from "../../assets/andres.jpg";
 import member6 from "../../assets/juanp.jpg";
-import member7 from "../../assets/juanm.jpg";
+import member7 from "../../assets/Juanm.jpg";
 import member8 from "../../assets/julio.jpg";
 import "./AboutUs.scss";
 

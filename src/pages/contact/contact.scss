@@ -21,7 +21,54 @@
     h2 {
       font-size: 42px;
     }
+    .form-loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 2.5rem;
+      width: 100%;
+      &:after {
+        content: "";
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        border: 3px solid $color-contrast-2;
+        border-top: 3px solid $color-contrast-3;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+    }
 
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .form-success-message,
+    .form-error-message {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 1rem 0.5rem;
+      border-radius: 0.7rem;
+      margin: 0.5rem 0;
+      box-shadow: 0 0 10px rgba($color-contrast-2, 0.15);
+    }
+
+    .form-success-message {
+      color: #00ff4c;
+      background: rgba(#00ff4c, 0.12);
+      border: 1.5px solid #00ff4c;
+      text-shadow: 0 0 8px #00ff4c;
+    }
+
+    .form-error-message {
+      color: #ff0077;
+      background: rgba(#ff0077, 0.08);
+      border: 1.5px solid #ff0077;
+      text-shadow: 0 0 8px #ff0077;
+    }
     button {
       margin-top: 1rem;
       margin-left: calc(100% - 100px);

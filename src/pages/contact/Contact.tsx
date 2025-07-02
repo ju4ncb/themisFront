@@ -2,12 +2,35 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 import { useForm } from "react-hook-form";
 import ContactInfo from "../../components/ContactInfo";
 import logo from "../../assets/themis-logo-white.png";
+import { useState } from "react";
 import "./contact.scss";
 
 const Contact = () => {
-  const onSubmit = (data: any) => {
-    // handle form submission here
-    console.log(data);
+  type ResponseStatus = "idle" | "sending" | "success" | "error";
+  const [responseStatus, setResponseStatus] = useState<ResponseStatus>("idle");
+  const onSubmit = async (data: any) => {
+    try {
+      setResponseStatus("sending");
+      const response = await fetch("https://formspree.io/f/mwpbywpd", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          message: data.message,
+        }),
+      });
+      if (response.ok) {
+        setResponseStatus("success");
+      } else {
+        setResponseStatus("error");
+      }
+    } catch (error) {
+      setResponseStatus("error");
+      console.log(error);
+    }
   };
 
   const {
@@ -45,6 +68,17 @@ const Contact = () => {
               <span>{errors.message.message}</span>
             )}
           </div>
+          {responseStatus === "sending" && <div className="form-loading" />}
+          {responseStatus === "success" && (
+            <div className="form-success-message">
+              ¡Mensaje enviado correctamente!
+            </div>
+          )}
+          {responseStatus === "error" && (
+            <div className="form-error-message">
+              Ocurrió un error al enviar el mensaje. Intenta nuevamente.
+            </div>
+          )}
           <button type="submit">Enviar</button>
         </form>
         <div className="info-container">
